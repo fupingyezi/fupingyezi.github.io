@@ -1,0 +1,710 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    
+    Tu Yuheng&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="React渲染原理其实之前讲过，这里复习一下 Fiber架构1. 虚拟DOM首先我们要知道虚拟DOM是什么，它本质上就是个由JavaScript对象表示的树状结构，用来模拟真实DOM的结构。如： 1234567891011121314151617181920212223&#123;  type: &#x27;div&#x27;,  &#x2F;&#x2F; 节点类型，这里是&#x27;div&#x27;  props">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tu Yuheng&#39;s Blog">
+<meta property="og:url" content="http://fupingyezi.github.io/2025/04/03/React%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B8%B8%E8%A7%81%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Tu Yuheng&#39;s Blog">
+<meta property="og:description" content="React渲染原理其实之前讲过，这里复习一下 Fiber架构1. 虚拟DOM首先我们要知道虚拟DOM是什么，它本质上就是个由JavaScript对象表示的树状结构，用来模拟真实DOM的结构。如： 1234567891011121314151617181920212223&#123;  type: &#x27;div&#x27;,  &#x2F;&#x2F; 节点类型，这里是&#x27;div&#x27;  props">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fupingyezi.github.io/images/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.png">
+<meta property="article:published_time" content="2025-04-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-04-20T08:01:28.787Z">
+<meta property="article:author" content="Tu Yuheng">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="组会分享">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fupingyezi.github.io/images/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Tu Yuheng's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css">
+
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">Tu Yuheng&#39;s Blog</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-React性能优化常见方式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/04/03/React%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B8%B8%E8%A7%81%E6%96%B9%E5%BC%8F/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-04-02T16:00:00.000Z" itemprop="datePublished">2025-04-03</time>
+    <time style="display: none;" id="post-update-time">2025-04-20</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="React渲染原理"><a href="#React渲染原理" class="headerlink" title="React渲染原理"></a>React渲染原理</h1><p>其实之前讲过，这里复习一下</p>
+<h3 id="Fiber架构"><a href="#Fiber架构" class="headerlink" title="Fiber架构"></a>Fiber架构</h3><h6 id="1-虚拟DOM"><a href="#1-虚拟DOM" class="headerlink" title="1. 虚拟DOM"></a>1. 虚拟DOM</h6><p>首先我们要知道虚拟DOM是什么，它本质上就是个<strong>由JavaScript对象表示的树状结构</strong>，用来模拟真实DOM的结构。<br>如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="string">&#x27;div&#x27;</span>,  <span class="comment">// 节点类型，这里是&#x27;div&#x27;</span></span><br><span class="line">  <span class="attr">props</span>: &#123;</span><br><span class="line">    <span class="attr">className</span>: <span class="string">&#x27;container&#x27;</span>,  <span class="comment">// 节点属性，这里是className</span></span><br><span class="line">    <span class="attr">id</span>: <span class="string">&#x27;my-div&#x27;</span>,  <span class="comment">// 另一个节点属性，这里是id</span></span><br><span class="line">    <span class="attr">style</span>: &#123; <span class="attr">color</span>: <span class="string">&#x27;blue&#x27;</span> &#125;,  <span class="comment">// 样式属性，可以是一个对象</span></span><br><span class="line">    <span class="attr">onClick</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123; <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Div clicked!&#x27;</span>); &#125;  <span class="comment">// 事件监听器，可以是一个函数</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">children</span>: [  <span class="comment">// 子节点数组</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&#x27;h1&#x27;</span>,  <span class="comment">// 子节点类型，这里是&#x27;h1&#x27;</span></span><br><span class="line">      <span class="attr">props</span>: &#123;</span><br><span class="line">        <span class="attr">className</span>: <span class="string">&#x27;title&#x27;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">children</span>: [<span class="string">&#x27;Hello, World!&#x27;</span>]  <span class="comment">// 子节点的文本内容</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&#x27;p&#x27;</span>,  <span class="comment">// 另一个子节点类型，这里是&#x27;p&#x27;</span></span><br><span class="line">      <span class="attr">props</span>: &#123;&#125;,</span><br><span class="line">      <span class="attr">children</span>: [<span class="string">&#x27;This is a paragraph.&#x27;</span>]  <span class="comment">// 另一个子节点的文本内容</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然实际上会复杂一点，但比直接操作真实DOM简单很多，因为真实DOM是实实在在对应着页面上的元素的，即使一个简单div标签属性都非常多。</p>
+<h6 id="2-Fiber"><a href="#2-Fiber" class="headerlink" title="2. Fiber"></a>2. Fiber</h6><p>而Fiber架构就是React 16引入的一种基于虚拟DOM的新的协调机制，在这之前是用基于递归的栈式架构。</p>
+<p>在Fiber架构中，虚拟DOM由<strong>Fiber节点</strong>实现，其本质是一个<strong>链表结构</strong>的对象。主要包含<code>child（第一个子节点）、sibling（同级节点）、return（上一级节点）</code>等属性</p>
+<p>在渲染过程中，Fiber结构通过<code>Scheduler（调度器）</code>来根据优先级安排更新任务执行顺序，然后由<code>Reconciler（协调器）</code>来根据新旧Fiber树(双重缓冲机制)的差异确定需要更新的地方（diff），最后由<code>Renderer（渲染器）</code>来将更新的虚拟DOM转化为真实DOM完成更新。</p>
+<p>而从产生更新到渲染之前，是React的调和阶段，这阶段还有React还有一件事就是把目标State转化为新的DOM树，这样才能比较。之后就是提交阶段，其实这也有两个流程。</p>
+<h1 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h1><h3 id="如何优化？"><a href="#如何优化？" class="headerlink" title="如何优化？"></a>如何优化？</h3><p>我们可以现针对调和阶段入手，调和阶段会计算新旧Fiber树之间的差异来为要更新的地方打上标记再交给下一阶段，在这过程中，它是如何使用diff算法计算的，我们不怎么能管理，但我们可以从哪些操作会触发更新来使我们的更新部分尽量达到最小入手。</p>
+<p>那么，哪些操作会触发更新？主要有forceUpdate、state、父组件render调用子组件render三种，不过第一种在类组件里面，我们写函数式组件的不用理会。</p>
+<p>那么第一个优化方案就显而易见了，state很复杂可以先不管，父组件更新调用子组件更新这个我们一下就想到了那三巨头</p>
+<h5 id="memo、useCallback、useMemo"><a href="#memo、useCallback、useMemo" class="headerlink" title="memo、useCallback、useMemo"></a>memo、useCallback、useMemo</h5><ol>
+<li>如何让父组件更新不带动子组件更新？<br> memo，我们用React.memo将子组件包裹起来，这样在渲染中，React会比较父组件传给子组件的props来决定是否更新子组件。</li>
+<li>传入函数和对象又该如何应对呢？<br> 即使函数和对象看起来没变，但这两属于引用数据类型，父组件每次渲染时都会引起其地址改变，而memo在比较时比较的是其引用地址而不是长的什么样，所以memo就失效了。这时候我们用useCallback缓存函数，useMemo缓存对象，再传给子组件就完美解决了</li>
+<li>当然useCallback和useMemo本身也是拿来优化的，前者函数，后者计算结果。<br>这样你就完成了第一项性能优化</li>
+</ol>
+<p>—-然后我们来针对这个state说几点</p>
+<h5 id="列表的key"><a href="#列表的key" class="headerlink" title="列表的key"></a>列表的key</h5><p>在上学期实习那段时间，其实有讲过列表的key，这跟diff算法有点关系。<br>首先问大家一个问题，下面的操作会进行几次DOM更新，几次DOM创建？分别对应哪个<code>li</code>？</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 前一次 Render 结果 --&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>奶龙<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>贝利亚<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 新的 Render 结果 --&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>大唐盛世<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>奶龙<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span>&gt;</span>贝利亚<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>答案是两次更新（大唐盛世和奶龙）、一次创建（贝利亚），为什么？<br>因为diff算法是根据<code>li</code>顺序来的，然后发现前两个里面内容变了需要更新，还多了一个贝利亚的。这就很不符合我们的想法，我们肯定是想要只进行一次创建，所以要用到<code>key</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 前一次 Render 结果 --&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span> <span class="attr">key</span>=<span class="string">&#x27;nailong&#x27;</span>&gt;</span>奶龙<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span> <span class="attr">key</span>=<span class="string">&#x27;beiliya&#x27;</span>&gt;</span>贝利亚<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 新的 Render 结果 --&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span> <span class="attr">key</span>=<span class="string">&#x27;tangshi&#x27;</span>&gt;</span>大唐盛世<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span> <span class="attr">key</span>=<span class="string">&#x27;nailong&#x27;</span>&gt;</span>奶龙<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">li</span> <span class="attr">key</span>=<span class="string">&#x27;beiliya&#x27;</span>&gt;</span>贝利亚<span class="tag">&lt;/<span class="name">li</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>现在diff算法会根据key值来比较虚拟DOM，key为’nailong’的相比较，’beiliya’的相比较，发现都不需要更新，然后需要创建一个，总的就只创建一次。<br>我们也可以在自定义组件的列表中使用key优化，加上memo，性能又提升了呢。</p>
+<h5 id="批量更新"><a href="#批量更新" class="headerlink" title="批量更新"></a>批量更新</h5><p>之前单老师问过一个问题，setState是异步还是同步的？<br>你可以想想，我们先讨论：</p>
+<p>看看下面这个经典例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Counter</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [number, setNumber] = <span class="title function_">useState</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">handleClick</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(number);</span><br><span class="line">    <span class="title function_">setNumber</span>(number + <span class="number">1</span>);</span><br><span class="line">    <span class="title function_">setNumber</span>(number + <span class="number">1</span>);</span><br><span class="line">    <span class="title function_">setNumber</span>(number + <span class="number">1</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(number);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;number&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> handleClick()&#125;&gt;+3<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>打印什么？显示什么？</p>
+<p>再看这个例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Counter</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [number, setNumber] = <span class="title function_">useState</span>(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">handleClick</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(number);</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">setNumber</span>(number + <span class="number">1</span>);</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(number);</span><br><span class="line">    &#125;, <span class="number">0</span>)</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">	  <span class="title function_">setNumber</span>(number + <span class="number">1</span>);</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(number);</span><br><span class="line">    &#125;, <span class="number">1</span>)</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">setNumber</span>(number + <span class="number">1</span>);</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(number);</span><br><span class="line">    &#125;, <span class="number">2</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;number&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> handleClick()&#125;&gt;+3<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">2</span>    <span class="number">3</span> </span><br></pre></td></tr></table></figure>
+
+<p>打印什么？显示什么？</p>
+<p>再看这个例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">Counter</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [number, setNumber] = <span class="title function_">useState</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">handleClick</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(number); </span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">setNumber</span>(<span class="function">(<span class="params">prevNumber</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(prevNumber + <span class="number">1</span>); </span><br><span class="line">        <span class="keyword">return</span> prevNumber + <span class="number">1</span>;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">setNumber</span>(<span class="function">(<span class="params">prevNumber</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(prevNumber + <span class="number">1</span>); </span><br><span class="line">        <span class="keyword">return</span> prevNumber + <span class="number">1</span>;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="title function_">setNumber</span>(<span class="function">(<span class="params">prevNumber</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(prevNumber + <span class="number">1</span>); </span><br><span class="line">        <span class="keyword">return</span> prevNumber + <span class="number">1</span>;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;, <span class="number">0</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;number&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;handleClick&#125;</span>&gt;</span>+3<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">0</span>  <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>打印什么？显示什么？</p>
+<p>答案：</p>
+<ol>
+<li>0 0 1</li>
+<li>0 0 0 0 1</li>
+<li>0 1 2 3 3</li>
+</ol>
+<p>可以看到前两种是异步，第三种是同步，其实第三种也是异步的，只不过React提供了这种状态更新函数可以让其实现同步效果，总的来说，这涉及到React的批处理机制，而且18以后扩展到了setTimeout和Promise中，简单来说，就是每次更新，React会将调度范围内setState集中在一起批量更新，对同一个state只会更新一次。</p>
+<p>那我们针对这种更新机制，就可以将多个状态合成一个状态，不过18以后批处理增强了，会自动形成一个类似合成效果的状态更新，所以这种了解一下就行。</p>
+<p>state重要的感觉就批处理和diff计算，下面我们换个思路，从程序员转换到用户视角，怎么进行性能优化</p>
+<h5 id="优先级更新"><a href="#优先级更新" class="headerlink" title="优先级更新"></a>优先级更新</h5><p>考虑一个使用场景，页面弹出一个 Modal，当用户点击 Modal 中的确定按钮后，代码将执行两个操作。</p>
+<ol>
+<li>关闭 Modal。</li>
+<li>页面处理 Modal 传回的数据并展示给用户。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">slowHandle</span> = (<span class="params"></span>) =&gt; </span><br><span class="line">&#123; </span><br><span class="line">	<span class="title function_">setShowInput</span>(<span class="literal">false</span>) </span><br><span class="line">	<span class="title function_">setNumbers</span>([...numbers, +inputValue].<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a - b)) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+在批处理机制中，这两个是同时进行的，但要是第二步需要的时间比较长呢，那么用户点击时就会感到明显的卡顿，那么我们就可以先关后处理数据，不过18之后感觉有点困难，光setTimeout是不行的，得加个useEffect什么的</li>
+</ol>
+<h5 id="跳过中间组件更新"><a href="#跳过中间组件更新" class="headerlink" title="跳过中间组件更新"></a>跳过中间组件更新</h5><p>想一下如果一个父组件到最低子组件直接嵌了几层，而父组件一层一层传下去的数据只在最低子组件用，更新一下是不是很麻烦。</p>
+<p>那么我们用一个工具只让这个数据出现在父组件和最低子组件不就好了。<br>怎么做呢？</p>
+<p>一是redux、zustand这类全局状态管理工具，只在父组件和最低子组件引入需要的状态。<br>二就是useContext了，而且在多层嵌套中用了这个其实项目也很会更简洁清晰，更好维护，怎么用就不多说了，讲过几次了。</p>
+<h5 id="节流（Throttle）和防抖（Debounce）"><a href="#节流（Throttle）和防抖（Debounce）" class="headerlink" title="节流（Throttle）和防抖（Debounce）"></a>节流（Throttle）和防抖（Debounce）</h5><ol>
+<li>节流：节流是一种<strong>限制函数执行频率</strong>的技术。它的原理是，当事件被频繁触发时，函数会按照一定的时间间隔执行，而不是每次触发事件都执行。换句话说，在一个时间段内，只会执行一次事件处理函数。类似你王者普攻间隔。</li>
+<li>防抖：防抖是一种<strong>延迟执行</strong>的技术。它的原理是，当事件被触发时，延迟执行事件处理函数，并且在延迟时间内如果事件再次被触发，则重新开始计时。只有当事件在指定的时间内没有再次触发，事件处理函数才会执行。这样可以避免某些高频率的操作被频繁触发，从而提高性能。类似你王者回城。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">throttle</span> = (<span class="params">func, limit</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> lastFunc;</span><br><span class="line">  <span class="keyword">let</span> lastRan;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> context = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">const</span> args = <span class="variable language_">arguments</span>;</span><br><span class="line">    <span class="keyword">if</span> (!lastRan) &#123;</span><br><span class="line">      func.<span class="title function_">apply</span>(context, args);</span><br><span class="line">      lastRan = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">clearTimeout</span>(lastFunc);</span><br><span class="line">      lastFunc = <span class="built_in">setTimeout</span>(</span><br><span class="line">        <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">          <span class="keyword">if</span> (<span class="title class_">Date</span>.<span class="title function_">now</span>() - lastRan &gt;= limit) &#123;</span><br><span class="line">            func.<span class="title function_">apply</span>(context, args);</span><br><span class="line">            lastRan = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        limit - (<span class="title class_">Date</span>.<span class="title function_">now</span>() - lastRan),</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">debounce</span> = (<span class="params">func, delay</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> debounceTimer;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> context = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="keyword">const</span> args = <span class="variable language_">arguments</span>;</span><br><span class="line">    <span class="built_in">clearTimeout</span>(debounceTimer);</span><br><span class="line">    debounceTimer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> func.<span class="title function_">apply</span>(context, args), delay);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; throttle, debounce &#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h5><p>懒加载主要是在处理图片的时候使用，试想如果你一个页面几千张图片，进入这个页面时你要全部加载出来，那不炸了吗？</p>
+<p>这就用到懒加载，什么是懒加载。一句话概括就是只渲染当前可视界面内的图片。</p>
+<p>根据这个我们可以一步一步实现</p>
+<ol>
+<li><p>监听页面滚动，只将滚动到当前可视页面的元素加载图片。以我小程序写的懒加载为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">const</span> <span class="title function_">handleScroll</span> = (<span class="params">newwindowHeight?: number</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> tempHeight = windowHeight;</span><br><span class="line">    <span class="keyword">if</span> (newwindowHeight) &#123;</span><br><span class="line">      tempHeight = newwindowHeight;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> query = <span class="title class_">Taro</span>.<span class="title function_">createSelectorQuery</span>();</span><br><span class="line">    blogList.<span class="title function_">forEach</span>(<span class="function">(<span class="params">_, index</span>) =&gt;</span> &#123;</span><br><span class="line">      query.<span class="title function_">select</span>(<span class="string">`#post-item-<span class="subst">$&#123;index&#125;</span>`</span>).<span class="title function_">boundingClientRect</span>();</span><br><span class="line">    &#125;);</span><br><span class="line">    query.<span class="title function_">exec</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">      res.<span class="title function_">forEach</span>(<span class="function">(<span class="params">rect, index</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!rect) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">const</span> &#123; top, bottom &#125; = rect;</span><br><span class="line">        <span class="keyword">if</span> (top &lt;= tempHeight &amp;&amp; bottom &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="title function_">setIsShowList</span>(<span class="function">(<span class="params">prevList</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!prevList.<span class="title function_">includes</span>(index)) &#123;</span><br><span class="line">              <span class="keyword">return</span> [...prevList, index];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> prevList;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="title function_">setIsShowList</span>(<span class="function">(<span class="params">prevList</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> prevList.<span class="title function_">filter</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item !== index);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">  </span><br><span class="line">   <span class="language-xml"><span class="tag">&lt;<span class="name">Image</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">	<span class="attr">className</span>=<span class="string">&#123;classnames(</span>&quot;<span class="attr">img</span>&quot;, &#123; &quot;<span class="attr">img-active</span>&quot;<span class="attr">:</span> <span class="attr">isVisiable</span> &#125;)&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">	<span class="attr">mode</span>=<span class="string">&quot;widthFix&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">	<span class="attr">lazyLoad</span>=<span class="string">&#123;true&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">	<span class="attr">src</span>=<span class="string">&#123;isVisiable</span> ? <span class="attr">item.showImg</span>[<span class="attr">0</span>] <span class="attr">:</span> &quot;&quot;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">	<span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-xml">	  navigateTo(&#123; url: &quot;/subpackage/blogDetail/index&quot; &#125;);</span></span><br><span class="line"><span class="language-xml">	  setBlogIndex(index);</span></span><br><span class="line"><span class="language-xml">	&#125;&#125;</span></span><br><span class="line"><span class="language-xml">&gt;<span class="tag">&lt;/<span class="name">Image</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>只选中出现在可视页面里的给图片src，没有出现就默认为’’</p>
+</li>
+<li><p>但这种有个缺点，滑动的时候会高频触发，你可以写个console滑一遍试试，一堆输出。所以我们可以把这个函数包裹在之前写的防抖或者节流中进行优化。</p>
+</li>
+<li><p>还有一种就是<code>IntersectionObserver API</code>,可以自动观测元素是否可视。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> intersectionObserver = <span class="keyword">new</span> <span class="title class_">IntersectionObserver</span>(<span class="function">(<span class="params">entries</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 如果 intersectionRatio 为 0，则目标在视野外，</span></span><br><span class="line">  <span class="comment">// 我们不需要做任何事情。</span></span><br><span class="line">  <span class="keyword">if</span> (entries[<span class="number">0</span>].<span class="property">intersectionRatio</span> &lt;= <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">loadItems</span>(<span class="number">10</span>);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Loaded new items&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 开始监听</span></span><br><span class="line">intersectionObserver.<span class="title function_">observe</span>(<span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.scrollerFooter&quot;</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>当然这里只针对了图片的懒加载，组件和页面都可以懒加载。</p>
+<h5 id="懒渲染"><a href="#懒渲染" class="headerlink" title="懒渲染"></a>懒渲染</h5><p>组件懒加载可以说是懒渲染，就是指当组件进入或即将进入可视区域时才渲染组件。<br>如何实现跟上面图片懒加载也差不多，就是将针对图片换成针对整个组件，不同的就是在图片懒加载中，高度是一定会根据图片列表的长度改变的，因为组件数一定是图片列表的长度，只是图片渲染只会在当前可视页面里，但组件就比较多变了</p>
+<p>我们以虚拟列表这个特殊懒渲染的例子来看看三种情况下懒渲染的实现。</p>
+<h5 id="虚拟列表"><a href="#虚拟列表" class="headerlink" title="虚拟列表"></a>虚拟列表</h5><p>我们先讨论虚拟列表的实现原理，</p>
+<p>与图片懒加载差不多，虚拟列表就是在可视页面渲染组件，但不同的是虚拟列表一般会有一个缓冲区，元素的消失和加入都在缓冲区里实现而非可视区，防止滑动过快而出现空白。<br><img src="/images/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96.png" alt="img"></p>
+<p>下面讲实现</p>
+<ol>
+<li>元素高度固定<br>对于元素高度固定的情况，我们可以直接由$数量\times高度$来得到撑开容器的高度，然后我们计算三个索引，上缓冲区起始，可视区起始，下缓冲区结束，如上图分别就是2 4 9</li>
+</ol>
+<p>如何计算？<br>首先我们已知滚动高度scrollOffest、元素高度itemSize、可视区高度screenHeight，然后我们自己规定缓冲区元素个数都为2，那么</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可视区起始索引 </span></span><br><span class="line"><span class="keyword">const</span> startIndex = <span class="title class_">Math</span>.<span class="title function_">floor</span>(scrollOffset / itemSize); </span><br><span class="line"><span class="comment">// 上缓冲区起始索引 </span></span><br><span class="line"><span class="keyword">const</span> finialStartIndex = <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="number">0</span>, startIndex - <span class="number">2</span>); </span><br><span class="line"><span class="comment">// 可视区能展示的元素的最大个数 </span></span><br><span class="line"><span class="keyword">const</span> numVisible = <span class="title class_">Math</span>.<span class="title function_">ceil</span>(screenHeight / itemSize); </span><br><span class="line"><span class="comment">// 下缓冲区结束索引 </span></span><br><span class="line"><span class="keyword">const</span> endIndex = <span class="title class_">Math</span>.<span class="title function_">min</span>(itemCount, startIndex + numVisible + <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>然后我们根据计算的索引值把要渲染的元素给container</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> items = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = finialStartIndex; i &lt; endIndex; i++) &#123; </span><br><span class="line">	<span class="keyword">const</span> itemStyle = &#123; </span><br><span class="line">		<span class="attr">position</span>: <span class="string">&#x27;absolute&#x27;</span>, </span><br><span class="line">		<span class="attr">height</span>: itemSize, </span><br><span class="line">		<span class="attr">width</span>: <span class="string">&#x27;100%&#x27;</span>, </span><br><span class="line">		<span class="comment">// 计算每个元素在container中的top值 </span></span><br><span class="line">		<span class="attr">top</span>: itemSize * i, &#125;; </span><br><span class="line">	items.<span class="title function_">push</span>( <span class="language-xml"><span class="tag">&lt;<span class="name">Child</span> <span class="attr">key</span>=<span class="string">&#123;i&#125;</span> <span class="attr">index</span>=<span class="string">&#123;i&#125;</span> <span class="attr">style</span>=<span class="string">&#123;itemStyle&#125;</span> /&gt;</span></span> ); </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">return</span> items;</span><br></pre></td></tr></table></figure>
+
+<p>把这两步合起来就是核心函数了，然后每次滚动触发即可。</p>
+<ol start="2">
+<li>元素高度不固定</li>
+</ol>
+<p>如果我们的itemSize不固定又该如何应对呢？</p>
+<p>容器总高度我们定一个预估元素高度，然后记录已获得的元素高度，用已获得的元素高度+未获得高度元素数量乘以预估元素高度即可，这个不是核心，只是为了撑开高度而已。下面才是核心</p>
+<p>还是先看已知条件<br>滚动高度scrollOffset、可视区高度screenHeight、每个元素自己的$itemSize_i$,。</p>
+<p>那么可视区起始索引是多少？换个说法，什么样的元素在可视区里？<br>没错，元素高度大于等于滚动高度的元素，那么这个元素高度如何得来呢？</p>
+<p>我们可以考虑记录所有列表项的真实高度和偏移量，用一个函数来获取，并记录每次最后下缓冲区结束的那个索引</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">getItemMetaData</span> = (<span class="params">props, index</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; itemSize &#125; = props;</span><br><span class="line">  <span class="keyword">const</span> &#123; measuredDataMap, <span class="title class_">LastMeasuredItemIndex</span> &#125; = measuredData;</span><br><span class="line">  <span class="keyword">if</span> (index &gt; <span class="title class_">LastMeasuredItemIndex</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> offset = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">LastMeasuredItemIndex</span> &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> lastMeasuredItem = measuredDataMap[<span class="title class_">LastMeasuredItemIndex</span>];</span><br><span class="line">      offset += lastMeasuredItem.<span class="property">offset</span> + lastMeasuredItem.<span class="property">size</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="title class_">LastMeasuredItemIndex</span> + <span class="number">1</span>; i &lt;= index; i++) &#123;</span><br><span class="line">      <span class="keyword">const</span> currentItemSize = <span class="title function_">itemSize</span>(i);</span><br><span class="line">      measuredDataMap[i] = &#123; <span class="attr">size</span>: currentItemSize, offset &#125;;</span><br><span class="line">      offset += currentItemSize;</span><br><span class="line">    &#125;</span><br><span class="line">    measuredData.<span class="property">LastMeasuredItemIndex</span> = index;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> measuredDataMap[index];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//measureData</span></span><br><span class="line"><span class="keyword">const</span> measuredData = &#123;</span><br><span class="line">  <span class="attr">measuredDataMap</span>: &#123;&#125;,</span><br><span class="line">  <span class="title class_">LastMeasuredItemIndex</span>: -<span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以求需要的几个索引了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//从0开始遍历找到第一个大于滚动高度的索引即为可视区开始索引</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getStartIndex</span> = (<span class="params">props, scrollOffset</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; itemCount &#125; = props;</span><br><span class="line">  <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> currentOffset = <span class="title function_">getItemMetaData</span>(props, index).<span class="property">offset</span>;</span><br><span class="line">    <span class="keyword">if</span> (currentOffset &gt;= scrollOffset) <span class="keyword">return</span> index;</span><br><span class="line">    <span class="keyword">if</span> (index &gt;= itemCount) <span class="keyword">return</span> itemCount;</span><br><span class="line">    index++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//从可视区开始索引开始，根据可视区高度求得可视区结束索引</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getEndIndex</span> = (<span class="params">props, startIndex</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; height, itemCount &#125; = props;</span><br><span class="line">  <span class="keyword">const</span> startItem = <span class="title function_">getItemMetaData</span>(props, startIndex);</span><br><span class="line">  <span class="keyword">const</span> maxOffset = startItem.<span class="property">offset</span> + height;</span><br><span class="line">  <span class="keyword">let</span> offset = startItem.<span class="property">offset</span> + startItem.<span class="property">size</span>;</span><br><span class="line">  <span class="keyword">let</span> endIndex = startIndex;</span><br><span class="line">  <span class="keyword">while</span> (offset &lt;= maxOffset &amp;&amp; endIndex &lt; (itemCount - <span class="number">1</span>)) &#123;</span><br><span class="line">    endIndex++;</span><br><span class="line">    <span class="keyword">const</span> currentItem = <span class="title function_">getItemMetaData</span>(props, endIndex);</span><br><span class="line">    offset += currentItem.<span class="property">size</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> endIndex;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//渲染范围就出来了，加上缓冲区的</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getRangeToRender</span> = (<span class="params">props, scrollOffset</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; itemCount &#125; = props;</span><br><span class="line">  <span class="keyword">const</span> startIndex = <span class="title function_">getStartIndex</span>(props, scrollOffset);</span><br><span class="line">  <span class="keyword">const</span> endIndex = <span class="title function_">getEndIndex</span>(props, startIndex);</span><br><span class="line">  <span class="keyword">return</span> [</span><br><span class="line">    <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="number">0</span>, startIndex - <span class="number">2</span>),</span><br><span class="line">    <span class="title class_">Math</span>.<span class="title function_">min</span>(itemCount - <span class="number">1</span>, endIndex + <span class="number">2</span>),</span><br><span class="line">    startIndex,</span><br><span class="line">    endIndex,</span><br><span class="line">  ];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据渲染范围塞元素就好了</span></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">getCurrentChildren</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> [startIndex, endIndex, originStartIndex, originEndIndex] = <span class="title function_">getRangeToRender</span>(props, scrollOffset);</span><br><span class="line">    <span class="keyword">const</span> items = [];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = startIndex; i &lt;= endIndex; i++) &#123;</span><br><span class="line">      <span class="keyword">const</span> item = <span class="title function_">getItemMetaData</span>(props, i);</span><br><span class="line">      <span class="keyword">const</span> itemStyle = &#123;</span><br><span class="line">        <span class="attr">position</span>: <span class="string">&#x27;absolute&#x27;</span>,</span><br><span class="line">        <span class="attr">height</span>: item.<span class="property">size</span>,</span><br><span class="line">        <span class="attr">width</span>: <span class="string">&#x27;100%&#x27;</span>,</span><br><span class="line">        <span class="attr">top</span>: item.<span class="property">offset</span>,</span><br><span class="line">      &#125;;</span><br><span class="line">      items.<span class="title function_">push</span>(</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">Child</span> <span class="attr">key</span>=<span class="string">&#123;i&#125;</span> <span class="attr">index</span>=<span class="string">&#123;i&#125;</span> <span class="attr">style</span>=<span class="string">&#123;itemStyle&#125;</span> /&gt;</span></span></span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> items;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>元素动态高度</li>
+</ol>
+<p>跟第二种区别是，元素不定高度在渲染前高度是确定了的，只是各不一样。但动态高度是渲染后才能知道其高度的。</p>
+<p>我们可以直接在第二种基础上进行修改</p>
+<p>定义一个sizeChange函数处理渲染后高度变化即可，让渲染之后再强制渲染一次</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">sizeChangeHandle</span> = (<span class="params">index, domNode</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> height = domNode.<span class="property">offsetHeight</span>;</span><br><span class="line">  <span class="keyword">const</span> &#123; measuredDataMap, lastMeasuredItemIndex &#125; = measuredData;</span><br><span class="line">  <span class="keyword">const</span> itemMetaData = measuredDataMap[index];</span><br><span class="line">  itemMetaData.<span class="property">size</span> = height; <span class="comment">// 更新当前列表项的高度</span></span><br><span class="line">  <span class="keyword">let</span> offset = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt;= lastMeasuredItemIndex; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> itemMetaData = measuredDataMap[i];</span><br><span class="line">    itemMetaData.<span class="property">offset</span> = offset; <span class="comment">// 重新计算每个列表项的偏移量</span></span><br><span class="line">    offset += itemMetaData.<span class="property">size</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">setState</span>(&#123;&#125;); <span class="comment">// 强制重新渲染组件</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getCurrentChildren</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> [startIndex, endIndex] = <span class="title function_">getRangeToRender</span>(props, scrollOffset);</span><br><span class="line">  <span class="keyword">const</span> items = [];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = startIndex; i &lt;= endIndex; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> item = <span class="title function_">getItemMetaData</span>(props, i);</span><br><span class="line">    <span class="keyword">const</span> itemStyle = &#123;</span><br><span class="line">      <span class="attr">position</span>: <span class="string">&#x27;absolute&#x27;</span>,</span><br><span class="line">      <span class="attr">height</span>: item.<span class="property">size</span>,</span><br><span class="line">      <span class="attr">width</span>: <span class="string">&#x27;100%&#x27;</span>,</span><br><span class="line">      <span class="attr">top</span>: item.<span class="property">offset</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">    items.<span class="title function_">push</span>(</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">ListItem</span> <span class="attr">key</span>=<span class="string">&#123;i&#125;</span> <span class="attr">index</span>=<span class="string">&#123;i&#125;</span> <span class="attr">style</span>=<span class="string">&#123;itemStyle&#125;</span> <span class="attr">ComponentType</span>=<span class="string">&#123;Child&#125;</span> <span class="attr">onSizeChange</span>=<span class="string">&#123;sizeChangeHandle&#125;</span> /&gt;</span></span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> items;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以用二分查找优化，不过好像说antd的虚拟列表实现更高效，可以了解一下。然后给自己组件库里加一个虚拟列表。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E4%BC%9A%E5%88%86%E4%BA%AB/" rel="tag">组会分享</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="一文理解定点数和浮点数的四则运算" class="lazyload">
+        
+      
+      <a href="/2025/03/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BF%90%E7%AE%97/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          一文理解定点数和浮点数的四则运算
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#React%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">React渲染原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fiber%E6%9E%B6%E6%9E%84"><span class="toc-number">1.0.1.</span> <span class="toc-text">Fiber架构</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-%E8%99%9A%E6%8B%9FDOM"><span class="toc-number">1.0.1.0.0.1.</span> <span class="toc-text">1. 虚拟DOM</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-Fiber"><span class="toc-number">1.0.1.0.0.2.</span> <span class="toc-text">2. Fiber</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">2.</span> <span class="toc-text">性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="toc-number">2.0.1.</span> <span class="toc-text">如何优化？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#memo%E3%80%81useCallback%E3%80%81useMemo"><span class="toc-number">2.0.1.0.1.</span> <span class="toc-text">memo、useCallback、useMemo</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E7%9A%84key"><span class="toc-number">2.0.1.0.2.</span> <span class="toc-text">列表的key</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E6%9B%B4%E6%96%B0"><span class="toc-number">2.0.1.0.3.</span> <span class="toc-text">批量更新</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7%E6%9B%B4%E6%96%B0"><span class="toc-number">2.0.1.0.4.</span> <span class="toc-text">优先级更新</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B7%B3%E8%BF%87%E4%B8%AD%E9%97%B4%E7%BB%84%E4%BB%B6%E6%9B%B4%E6%96%B0"><span class="toc-number">2.0.1.0.5.</span> <span class="toc-text">跳过中间组件更新</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8A%82%E6%B5%81%EF%BC%88Throttle%EF%BC%89%E5%92%8C%E9%98%B2%E6%8A%96%EF%BC%88Debounce%EF%BC%89"><span class="toc-number">2.0.1.0.6.</span> <span class="toc-text">节流（Throttle）和防抖（Debounce）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="toc-number">2.0.1.0.7.</span> <span class="toc-text">懒加载</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%87%92%E6%B8%B2%E6%9F%93"><span class="toc-number">2.0.1.0.8.</span> <span class="toc-text">懒渲染</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8"><span class="toc-number">2.0.1.0.9.</span> <span class="toc-text">虚拟列表</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2025
+      <span class="footer-info-sep"></span>
+      Tu Yuheng
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        27.7k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:57
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#React%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">React渲染原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fiber%E6%9E%B6%E6%9E%84"><span class="toc-number">1.0.1.</span> <span class="toc-text">Fiber架构</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-%E8%99%9A%E6%8B%9FDOM"><span class="toc-number">1.0.1.0.0.1.</span> <span class="toc-text">1. 虚拟DOM</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-Fiber"><span class="toc-number">1.0.1.0.0.2.</span> <span class="toc-text">2. Fiber</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">2.</span> <span class="toc-text">性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="toc-number">2.0.1.</span> <span class="toc-text">如何优化？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#memo%E3%80%81useCallback%E3%80%81useMemo"><span class="toc-number">2.0.1.0.1.</span> <span class="toc-text">memo、useCallback、useMemo</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E7%9A%84key"><span class="toc-number">2.0.1.0.2.</span> <span class="toc-text">列表的key</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E6%9B%B4%E6%96%B0"><span class="toc-number">2.0.1.0.3.</span> <span class="toc-text">批量更新</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7%E6%9B%B4%E6%96%B0"><span class="toc-number">2.0.1.0.4.</span> <span class="toc-text">优先级更新</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B7%B3%E8%BF%87%E4%B8%AD%E9%97%B4%E7%BB%84%E4%BB%B6%E6%9B%B4%E6%96%B0"><span class="toc-number">2.0.1.0.5.</span> <span class="toc-text">跳过中间组件更新</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8A%82%E6%B5%81%EF%BC%88Throttle%EF%BC%89%E5%92%8C%E9%98%B2%E6%8A%96%EF%BC%88Debounce%EF%BC%89"><span class="toc-number">2.0.1.0.6.</span> <span class="toc-text">节流（Throttle）和防抖（Debounce）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="toc-number">2.0.1.0.7.</span> <span class="toc-text">懒加载</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%87%92%E6%B8%B2%E6%9F%93"><span class="toc-number">2.0.1.0.8.</span> <span class="toc-text">懒渲染</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8"><span class="toc-number">2.0.1.0.9.</span> <span class="toc-text">虚拟列表</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">6</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.6/dist/index.umd.js" integrity="sha384-vkGvf25gm1C1PbcoD5dNfc137HzNL&#x2F;hr1RKA5HniJOaawtvUmH5lTVFgFAruE9Ge" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+
