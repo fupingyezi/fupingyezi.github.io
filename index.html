@@ -65,7 +65,123 @@
 <link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
   <body>
     
@@ -181,14 +297,320 @@
     <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
-      <a class="post-link" href="/2025/04/03/React%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B8%B8%E8%A7%81%E6%96%B9%E5%BC%8F/" aria-label=""></a>
+      <a class="post-link" href="/2025/07/27/8.%E6%A0%88%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day8-栈"></a>
     
     
     <div class="post-cover-left">
       
         
         
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="" class="lazyload">
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day8-栈" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-27</span>
+        <span><span class="icon-pencil"></span>2.9k words</span>
+        <span><span class="icon-clock"></span>11 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day8-栈</h2>
+      <article class="post-article">
+        
+          前言栈栈，跟队列一样是一种线性数据结构，逻辑结构是先进后出，跟堆东西一样，先堆上的东西最后才能拿下来，物理结构连续的数组，非连续性的链表都可以存储栈，与栈相关的题目一般是考匹配、递归和单调栈，我们提一下单调栈。对于栈，我们一般只能在栈顶进行pop和push，是一种单向操作数据结构。
+单调栈在队列专题我们讲过单调队列，单调栈和单调队列其实是一个性质的东西。求最大值我们维护栈底到栈顶是单增，求最小值我们维护栈底到栈顶是单减。怎么维护呢？
+
+对于单增栈：只有当前元素比栈顶元素大才能入栈，否则先将当前栈顶元素弹出，直到满足入栈条件。
+对于单减栈：只有当前元素比栈顶元素小才能入栈，否则先将当前栈顶元素弹
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/26/7.%E4%BD%8D%E8%BF%90%E7%AE%97+%E6%8E%92%E5%BA%8F%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day7-位运算和排序"></a>
+    
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day7-位运算和排序" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-26</span>
+        <span><span class="icon-pencil"></span>3.3k words</span>
+        <span><span class="icon-clock"></span>14 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day7-位运算和排序</h2>
+      <article class="post-article">
+        
+          前言位运算位运算我们知道
+
+
+
+
+符号
+描述
+运算规则
+实例（以四位二进制数为例）
+
+
+
+
+&amp;amp;
+与
+两个位都为1时，结果才为1。
+0001 &amp;amp; 0001 = 0001, 0001 &amp;amp; 0000 = 0000, 0000 &amp;amp; 0000 = 0000
+
+
+\
+
+或
+两个位中只要有一个为1，结果就为1。
+0001 \
+0001 = 0001, 0001 \
+0000 = 0001, 0000 \
+0000 = 0000
+
+
+^
+异或
+两个位相同为0，相异为1。
+0001 ^ 0001 = 0000, 0001 ^ 0000 = 0001, 0000 ^ 0000 = 
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/25/6.%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day6-二分查找"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day6-二分查找" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-25</span>
+        <span><span class="icon-pencil"></span>3.4k words</span>
+        <span><span class="icon-clock"></span>13 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day6-二分查找</h2>
+      <article class="post-article">
+        
+          前言二分查找（英语：binary search），也称折半搜索（英语：half-interval search）、对数搜索（英语：logarithmic search），是用来在一个有序数组中查找某一元素的算法，一般情况下我们这里的有序是指严格递增或递减，即不含重复元素，但如果非严格或者部分有序也可以视具体情况巧妙解决。
+过程具体就是在有序序列中查找一个目标，每次将序列折半，那么由于有序，必然有一半小于等于，一半大于等于，我们只关注当前这个中间点：
+
+中间点等于，直接返回
+中间点大于，那说明我们在大于的那一部分，想要找到，就在另一部分中继续二分。
+中间点小于，同理。这就是二分过程，很容易得出时
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/23/5.%E7%9F%A9%E9%98%B5%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day5-矩阵"></a>
+    
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day5-矩阵" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-23</span>
+        <span><span class="icon-pencil"></span>1.8k words</span>
+        <span><span class="icon-clock"></span>7 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day5-矩阵</h2>
+      <article class="post-article">
+        
+          前言矩阵，就是二维数组。把一维变二维难了点，比如说快速幂有矩阵快速幂，前缀和有二维前缀和。这个专题就是以力扣hot100中以矩阵为背景的一些题。
+一、矩阵置零
+主考知识点：数组、哈希表、矩阵，难度中等73. 矩阵置零 - 力扣（LeetCode）
+
+一个直观的解决方法：创建一个跟目标矩阵一样大小的不含0元素的矩阵，遍历目标矩阵，遇到0就将我们创建的矩阵对应行列变为0。然后把0填入目标矩阵对应位置，此时额外空间为o(mn)。
+改进一下：创建元素均为0的一个行标记数组和一个列标记数组，遍历matrix，遇到0就把行标记数组和列标记数组对应改为1，代表这行或这列存在0，要全部化为0。然后根据行列标记
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/23/4.%E9%98%9F%E5%88%97+%E5%89%8D%E7%BC%80%E5%92%8C%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day4-队列和前缀和"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day4-队列和前缀和" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-23</span>
+        <span><span class="icon-pencil"></span>2.1k words</span>
+        <span><span class="icon-clock"></span>8 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day4-队列和前缀和</h2>
+      <article class="post-article">
+        
+          前言队列队列：一种线性数据结构，逻辑结构是先进先出，就像排队一样，先排的先走。物理结构连续空间的数组、非连续空间的链表都可以存储队列，不过力扣hot100没有纯队列解题，所以直接深入，说一下单调队列和优先队列。
+单调队列我们以一道题来理解单调队列是干嘛的。
+例：给出一个长度为的数组，编程输出每个连续的数中的最大值和最小值。
+暴力解法就不用说了，先来看看单调队列的定义：顾名思义，单调队列的重点分为「单调」和「队列」。「单调」指的是元素的「规律」——递增（或递减）。「队列」指的是元素只能从队头和队尾进行操作。注：单调队列中的 “队列” 与正常的队列有一定的区别，寻常队列是队头pop，队尾push，
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/22/3.%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day3-滑动窗口"></a>
+    
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day3-滑动窗口" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-22</span>
+        <span><span class="icon-pencil"></span>2k words</span>
+        <span><span class="icon-clock"></span>8 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day3-滑动窗口</h2>
+      <article class="post-article">
+        
+          前言滑动窗口：一般是用两个指针维护的一个区间，有定长窗口，也有不定长窗口，主要用来查找满足一定条件的连续区间。
+关键点：一般使用滑动窗口一定要思考两个关键的问题，一是维护的是一个怎样的区间，简单的就是题目需要的区间，复杂的可能还要根据题目推导一下；二是怎样维护这个区间，也就是这个区间是怎么扩展的，怎么去遍历这个序列的。定长窗口比较简单，只需考虑右边怎么扩展就行，不定长就得两端考虑了。
+一、无重复字符的最长子串
+主考知识点：字符串、滑动窗口、哈希表，难度中等3. 无重复字符的最长子串 - 力扣（LeetCode）
+
+根据题意我们是要找到满足不含重复字符的最长子串的一个区间，所以想到可以用滑动窗口
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/21/2.%E5%8F%8C%E6%8C%87%E9%92%88%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day2-双指针"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day2-双指针" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-21</span>
+        <span><span class="icon-pencil"></span>2.5k words</span>
+        <span><span class="icon-clock"></span>9 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day2-双指针</h2>
+      <article class="post-article">
+        
+          前言：双指针算法
+一般情况下，我们都是使用一个索引，即一个指针遍历序列，而双指针，顾名思义就是定义两个索引指针来达到巧妙遍历序列减少时间复杂度的效果，常见的双指针算法有快慢指针、对撞指针和滑动窗口、普通双指针遍历。
+
+1.快慢指针：定义一个快指针和慢指针，一般情况下快指针移动步长大于慢指针，一般用来解决环问题，单链表中间节点问题等，主要在链表专题里看应用，可以移步查看。2.对撞指针：定义左指针和右指针，一左一右向中间遍历序列。3.滑动窗口：用两个指针标识一个窗口，右端先向右进行扩充，达到一定条件后左端向右端逼近，达到一定条件后停止，右端继续扩充，以此循环直到解决问题。（由于力扣是把滑动窗口单独
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/20/1.%E5%93%88%E5%B8%8C%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day1-哈希"></a>
+    
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day1-哈希" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-20</span>
+        <span><span class="icon-pencil"></span>1.9k words</span>
+        <span><span class="icon-clock"></span>7 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day1-哈希</h2>
+      <article class="post-article">
+        
+          前言：哈希
+哈希即通过一系列函数映射（哈希函数）将待处理序列散列化，从而映射到不同的地址中，以地址key存储具体的值，访问值时只需知晓其对应的key值即可，是一种空间换时间的算法。一般我们在解决哈希问题的时候最主要是确定键是什么，再考虑怎么映射
+
+下面介绍两个JavaScript常用的处理哈希的方法
+Set集合
+Set 对象是值的合集（collection）。集合（set）中的元素只会出现一次，即集合中的元素是唯一的。
+构造函数12const set = new Set()const set = new Set(iterable)
+
+常用内置实例方法
+set.add(value)：在该集合中插
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/04/03/React%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B8%B8%E8%A7%81%E6%96%B9%E5%BC%8F/" aria-label="React性能优化常见方式"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="React性能优化常见方式" class="lazyload">
         
       
     </div>
@@ -198,12 +620,11 @@
         <span><span class="icon-pencil"></span>4.5k words</span>
         <span><span class="icon-clock"></span>19 mins</span>
       </div>
-      <h2 class="post-title"></h2>
+      <h2 class="post-title">React性能优化常见方式</h2>
       <article class="post-article">
         
           React渲染原理其实之前讲过，这里复习一下
-Fiber架构1. 虚拟DOM首先我们要知道虚拟DOM是什么，它本质上就是个由JavaScript对象表示的树状结构，用来模拟真实DOM的结构。如：
-1234567891011121314151617181920212223&amp;#123;  type: &amp;#x27;div&amp;#x27;,  // 节点类型，这里是&amp;#x27;div&amp;#x27;  props: &amp;#123;    className: &amp;#x27;container&amp;#x27;,  // 节点属性，这里是className    id: &amp;#x27;my-div&amp;#x27;,  // 另
+Fiber架构1. 虚拟DOM首先我们要知道虚拟DOM是什么，它本质上就是个由JavaScript对象表示的树状结构，用来模拟真实DOM的结构。如：1234567891011121314151617181920212223&amp;#123;  type: &amp;#x27;div&amp;#x27;,  // 节点类型，这里是&amp;#x27;div&amp;#x27;  props: &amp;#123;    className: &amp;#x27;container&amp;#x27;,  // 节点属性，这里是className    id: &amp;#x27;my-div&amp;#x27;,  // 另一
         
       </article>
     </div>
@@ -227,216 +648,26 @@ Fiber架构1. 虚拟DOM首先我们要知道虚拟DOM是什么，它本质上就
     <div class="post-info">
       <div class="post-meta">
         <span><span class="icon-calendar"></span>2025-03-04</span>
-        <span><span class="icon-pencil"></span>3.7k words</span>
-        <span><span class="icon-clock"></span>17 mins</span>
+        <span><span class="icon-pencil"></span>2.5k words</span>
+        <span><span class="icon-clock"></span>10 mins</span>
       </div>
       <h2 class="post-title">一文理解定点数和浮点数的四则运算</h2>
       <article class="post-article">
         
-          真值与机器数概念不赘述，直接正题先立一个大前提：$$设x为真值,x_{数值部分}&amp;#x3D;\begin{cases}x_1x_2…x_n,,,x为整数\0.x_1x_2…x_n,,,x为小数\\end{cases}$$
-1.原码
-当$x\geq0$时，原码为$x$数值前添加0，则$[x]_原&amp;#x3D;x$
-当$x\leq0$时，原码为$x$数值前添加1，则$[x]_原&amp;#x3D;2^n+|x|&amp;#x3D;2^n-x$
-小数同理则：$$[x]_原&amp;#x3D;\begin{cases}0,x,,,,,,2^n&amp;gt;x\geq0\2^n-x,,,,,,0\geq x&amp;gt;-2^n\x,,,,
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
-    <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
-    
-      <a class="post-link" href="/2024/12/06/TypeScript%E9%AB%98%E9%98%B6%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3/" aria-label="从TypeScript类型深入了解TS"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="从TypeScript类型深入了解TS" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-12-06</span>
-        <span><span class="icon-pencil"></span>8k words</span>
-        <span><span class="icon-clock"></span>34 mins</span>
-      </div>
-      <h2 class="post-title">从TypeScript类型深入了解TS</h2>
-      <article class="post-article">
-        
-          从TypeScript类型深入了解TS
-与JavaScript弱类型语言不同，TypeScript&amp;#x3D;Type+JavaScript，是一门强类型语言。
+          真值与机器数概念不赘述，直接正题先立一个大前提：
 
-类型基础
-TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了一些其他类型。
-
-基础类型种类JavaScript沿用基础类型
-布尔值-boolean：true&amp;#x2F;false。
-数字-number：和JavaScript一样，TypeScript所有的数字都是浮点数，支持二、八、十、十六进制字面量。
-字符串-string：使用&amp;quot;&amp;quot;或&amp;#39;&amp;#39;包裹的文本内容。模版字符串：用
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
-    <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-      <a class="post-link" href="/2024/12/05/%E5%B0%81%E8%A3%85%E3%80%81%E7%BB%A7%E6%89%BF%E3%80%81%E5%A4%9A%E6%80%81/" aria-label="深入C++封装、继承、多态"></a>
-    
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="深入C++封装、继承、多态" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-12-05</span>
-        <span><span class="icon-pencil"></span>5.1k words</span>
-        <span><span class="icon-clock"></span>19 mins</span>
-      </div>
-      <h2 class="post-title">深入C++封装、继承、多态</h2>
-      <article class="post-article">
-        
-          封装、继承、多态1.封装
-将数据和操作数据的方法进行有机结合，隐藏对象的属性和实现细节，仅对外公开接口来和对象进行交互。
-
-2.继承
-
-用户通过已有的类定义新类，新类将拥有原有类的全部特性，原有类被称为基类(base class)或父类(super class)，新产生的类被称为派生类(derived class)或子类(subclass)，派生类拥有基类的特性称为继承，有基类产生派生类的过程称为派生。
-派生类有且只有一个基类的继承方式称为单继承或单向继承。
-派生类有两个或两个以上的基类的继承方式称为多继承或多重继承
-
-
-继承的定义定义语法：123class derivedClass : pu
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
-    <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
-    
-      <a class="post-link" href="/2024/11/29/React%20Hooks/" aria-label="深入浅出 React Hooks"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="深入浅出 React Hooks" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-11-29</span>
-        <span><span class="icon-pencil"></span>6.3k words</span>
-        <span><span class="icon-clock"></span>26 mins</span>
-      </div>
-      <h2 class="post-title">深入浅出 React Hooks</h2>
-      <article class="post-article">
-        
-          深入浅出React Hooks
-先说一下HOOK的使用规则：
-
-只能在组件中或者其他自定义Hook函数中调用
-只能在组件的顶层调用，不能嵌套在if、for、其它的函数中
-
-
-渲染原理原生HTML+CSS+JAVASCRIPT渲染
-
-整体流程浏览器将HTML解析为DOM树，将CSS解析为样式CSSOM树，然后合成Render渲染树，然后渲染到页面上。是从上到下解析的一个过程。
-
-JavaScript渲染
-在解析HTML过程中，如果遇到script元素，会停止DOM树的构建，转而下载JavaScript代码并执行JavaScript脚本，待脚本结束后才会继续解析HTML。
-但这有可能会阻塞页面，所
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
-    <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-      <a class="post-link" href="/2024/10/30/Test-Post/" aria-label="Test Post"></a>
-    
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="Test Post" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-10-30</span>
-        <span><span class="icon-pencil"></span>43 words</span>
-        <span><span class="icon-clock"></span>1 min</span>
-      </div>
-      <h2 class="post-title">Test Post</h2>
-      <article class="post-article">
-        
-          Hexo-first-post-test
-Quick StartCreate a new post1$ hexo new &amp;quot;My New Post&amp;quot;
-
-More info: Writing
-Run server1$ hexo server
-
-More info: Server
-Generate static files1$ hexo generate
-
-More info: Generating
-Deploy to remote sites1$ hexo deploy
-
-More info: Deployment
-
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
-    <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
-    
-      <a class="post-link" href="/2024/10/30/hello-world/" aria-label="Hello World"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="Hello World" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-10-30</span>
-        <span><span class="icon-pencil"></span>75 words</span>
-        <span><span class="icon-clock"></span>1 min</span>
-      </div>
-      <h2 class="post-title">Hello World</h2>
-      <article class="post-article">
-        
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new &amp;quot;My New Post&amp;quot;
-
-More info: Writing
-Run server1$ hexo ser
+设x为真值,x_{数值部分}=\begin{cases}x_1x_2...x_n,\,\,x为整数\\
+0.x_1x_2...x_n,\,\,x为小数\\
+\end{cases}1.原码
+当时，原码为数值前添加0，则原
+当时，原码为数值前添加1，则原
+小数同理则：
+[x]_原=
+\begin{cases}0,x\,\,\,\,\,\,2^n&gt;x\geq0\\
+2^n-x\,\,\,\,\,\,0\geq x&gt;-2^n\\
+x\,\,\,\,\,\,1&gt;x\geq0\\
+1-x\,\,\,\,\,\,0\geq x&gt;-1\\
+\end{case
         
       </article>
     </div>
@@ -444,6 +675,11 @@ Run server1$ hexo ser
 </div>
   
 
+
+  <nav id="page-nav" data-aos="fade-up">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
 
 
 </section>
@@ -460,7 +696,7 @@ Run server1$ hexo ser
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">7</div>
+    <div class="sidebar-state-number">14</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -468,7 +704,7 @@ Run server1$ hexo ser
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">19</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -533,10 +769,10 @@ Run server1$ hexo ser
     
       <div>
         <span class="icon-brush"></span>
-        27.7k
+        46.5k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:57
+        03:06
       </div>
     
     
@@ -570,7 +806,7 @@ Run server1$ hexo ser
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">7</div>
+    <div class="sidebar-state-number">14</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -578,7 +814,7 @@ Run server1$ hexo ser
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">19</div>
   </div>
 </div>
 <div class="sidebar-social">
