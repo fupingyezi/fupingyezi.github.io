@@ -69,7 +69,119 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
   <body>
     
@@ -185,10 +297,53 @@
     <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
-      <a class="post-link" href="/2024/12/06/TypeScript%E9%AB%98%E9%98%B6%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3/" aria-label="从TypeScript类型深入了解TS"></a>
+      <a class="post-link" href="/2025/03/04/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%BF%90%E7%AE%97/" aria-label="一文理解定点数和浮点数的四则运算"></a>
     
     
     <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="一文理解定点数和浮点数的四则运算" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-03-04</span>
+        <span><span class="icon-pencil"></span>2.5k words</span>
+        <span><span class="icon-clock"></span>10 mins</span>
+      </div>
+      <h2 class="post-title">一文理解定点数和浮点数的四则运算</h2>
+      <article class="post-article">
+        
+          真值与机器数概念不赘述，直接正题先立一个大前提：
+
+设x为真值,x_{数值部分}=\begin{cases}x_1x_2...x_n,\,\,x为整数\\
+0.x_1x_2...x_n,\,\,x为小数\\
+\end{cases}1.原码
+当时，原码为数值前添加0，则原
+当时，原码为数值前添加1，则原
+小数同理则：
+[x]_原=
+\begin{cases}0,x\,\,\,\,\,\,2^n&gt;x\geq0\\
+2^n-x\,\,\,\,\,\,0\geq x&gt;-2^n\\
+x\,\,\,\,\,\,1&gt;x\geq0\\
+1-x\,\,\,\,\,\,0\geq x&gt;-1\\
+\end{case
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2024/12/06/TypeScript%E9%AB%98%E9%98%B6%E7%B1%BB%E5%9E%8B%E8%AF%A6%E8%A7%A3/" aria-label="从TypeScript类型深入了解TS"></a>
+    
+    
+    <div class="post-cover-right">
       
         
         
@@ -222,12 +377,12 @@ TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了一
 </div>
   
     <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
       <a class="post-link" href="/2024/12/05/%E5%B0%81%E8%A3%85%E3%80%81%E7%BB%A7%E6%89%BF%E3%80%81%E5%A4%9A%E6%80%81/" aria-label="深入C++封装、继承、多态"></a>
     
     
-    <div class="post-cover-right">
+    <div class="post-cover-left">
       
         
         
@@ -262,12 +417,12 @@ TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了一
 </div>
   
     <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
+  <div class="post-wrap-right" data-aos="fade-up">
     
       <a class="post-link" href="/2024/11/29/React%20Hooks/" aria-label="深入浅出 React Hooks"></a>
     
     
-    <div class="post-cover-left">
+    <div class="post-cover-right">
       
         
         
@@ -305,12 +460,12 @@ JavaScript渲染
 </div>
   
     <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
+  <div class="post-wrap-left" data-aos="fade-up">
     
       <a class="post-link" href="/2024/10/30/hello-world/" aria-label="Hello World"></a>
     
     
-    <div class="post-cover-right">
+    <div class="post-cover-left">
       
         
         
@@ -359,7 +514,7 @@ Run server1$ hexo serv
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">14</div>
+    <div class="sidebar-state-number">15</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -367,7 +522,7 @@ Run server1$ hexo serv
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">19</div>
+    <div class="sidebar-state-number">20</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -432,10 +587,10 @@ Run server1$ hexo serv
     
       <div>
         <span class="icon-brush"></span>
-        46.5k
+        54.6k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        03:06
+        03:40
       </div>
     
     
@@ -469,7 +624,7 @@ Run server1$ hexo serv
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">14</div>
+    <div class="sidebar-state-number">15</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -477,7 +632,7 @@ Run server1$ hexo serv
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">19</div>
+    <div class="sidebar-state-number">20</div>
   </div>
 </div>
 <div class="sidebar-social">
