@@ -32,7 +32,7 @@
     <meta name="description" content="前言链表，也是一种线性数据结构，跟数组很像。但与数组不同的是，链表是由一块一块非连续内存空间存储数据，空间与空间通过指针连接，所以我们无法通过像数组那样直接通过下标索引查找一个元素，而是通过指针从头遍历到我们需要的元素。 链表一般分为单链表、双向链表、循环链表、双向循环链表。单链表只能从头向尾部遍历，双向链表可以双向遍历，循环链表为单链表头尾指针相连，双向循环链表为双向链表头尾指针相连。 一、相交">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法修炼手册day9~day11-链表">
-<meta property="og:url" content="http://fupingyezi.github.io/2025/07/28/9.%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/index.html">
+<meta property="og:url" content="http://fupingyezi.github.io/2025/07/31/9.%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/index.html">
 <meta property="og:site_name" content="Tu Yuheng&#39;s Blog">
 <meta property="og:description" content="前言链表，也是一种线性数据结构，跟数组很像。但与数组不同的是，链表是由一块一块非连续内存空间存储数据，空间与空间通过指针连接，所以我们无法通过像数组那样直接通过下标索引查找一个元素，而是通过指针从头遍历到我们需要的元素。 链表一般分为单链表、双向链表、循环链表、双向循环链表。单链表只能从头向尾部遍历，双向链表可以双向遍历，循环链表为单链表头尾指针相连，双向循环链表为双向链表头尾指针相连。 一、相交">
 <meta property="og:locale" content="en_US">
@@ -67,8 +67,8 @@
 <meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250728/Pasted-image-20250730100834.png">
 <meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250728/Pasted-image-20250730105603.png">
 <meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250728/Pasted-image-20250730105616.png">
-<meta property="article:published_time" content="2025-07-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-30T03:58:44.281Z">
+<meta property="article:published_time" content="2025-07-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-01T14:25:06.802Z">
 <meta property="article:author" content="Tu Yuheng">
 <meta property="article:tag" content="计算机算法">
 <meta property="article:tag" content="力扣">
@@ -337,9 +337,9 @@ mjx-container[display="true"] + br {
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
-  <a href="/2025/07/28/9.%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/" class="article-date-link" data-aos="zoom-in">
-    <time datetime="2025-07-27T16:00:00.000Z" itemprop="datePublished">2025-07-28</time>
-    <time style="display: none;" id="post-update-time">2025-07-30</time>
+  <a href="/2025/07/31/9.%E9%93%BE%E8%A1%A8%E4%B8%93%E9%A2%98/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-07-30T16:00:00.000Z" itemprop="datePublished">2025-07-31</time>
+    <time style="display: none;" id="post-update-time">2025-08-01</time>
   </a>
 </div>
 
@@ -544,6 +544,22 @@ mjx-container[display="true"] + br {
   
   <nav id="article-nav" data-aos="fade-up">
     
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day12~day13-二叉树" class="lazyload">
+          
+        
+        <a href="/2025/08/01/10.%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%93%E9%A2%98/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            算法修炼手册day12~day13-二叉树
+          
+        </h3>
+      </div>
+    
     
     <div class="article-nav-link-wrap article-nav-link-right">
       
@@ -594,7 +610,7 @@ mjx-container[display="true"] + br {
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">15</div>
+    <div class="sidebar-state-number">16</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -602,7 +618,7 @@ mjx-container[display="true"] + br {
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">20</div>
+    <div class="sidebar-state-number">21</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -672,10 +688,10 @@ mjx-container[display="true"] + br {
     
       <div>
         <span class="icon-brush"></span>
-        54.6k
+        62.6k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        03:40
+        04:13
       </div>
     
     
@@ -718,7 +734,7 @@ mjx-container[display="true"] + br {
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">15</div>
+    <div class="sidebar-state-number">16</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -726,7 +742,7 @@ mjx-container[display="true"] + br {
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">20</div>
+    <div class="sidebar-state-number">21</div>
   </div>
 </div>
 <div class="sidebar-social">
