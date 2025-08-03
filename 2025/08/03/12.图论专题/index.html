@@ -1,0 +1,979 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    算法修炼手册day15-图论 |
+    
+    Tu Yuheng&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="前言一、图的基本概念及常见算法 以下由ai生成。 一、基本概念     概念 说明     顶点（Vertex） 图中的节点，通常用 V 表示   边（Edge） 顶点之间的连接，通常用 E 表示   无向图 边没有方向，(A,B) 和 (B,A) 是相同的   有向图 边有方向， 和  是不同的   权值（Weight） 边上的数值，表示距离、代价等   度（Degree） 与顶点相连的边数（有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法修炼手册day15-图论">
+<meta property="og:url" content="http://fupingyezi.github.io/2025/08/03/12.%E5%9B%BE%E8%AE%BA%E4%B8%93%E9%A2%98/index.html">
+<meta property="og:site_name" content="Tu Yuheng&#39;s Blog">
+<meta property="og:description" content="前言一、图的基本概念及常见算法 以下由ai生成。 一、基本概念     概念 说明     顶点（Vertex） 图中的节点，通常用 V 表示   边（Edge） 顶点之间的连接，通常用 E 表示   无向图 边没有方向，(A,B) 和 (B,A) 是相同的   有向图 边有方向， 和  是不同的   权值（Weight） 边上的数值，表示距离、代价等   度（Degree） 与顶点相连的边数（有">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803120723.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803120749.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803124131.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803124146.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803130816.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803130827.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803151210.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803151222.png">
+<meta property="article:published_time" content="2025-08-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-03T07:43:53.307Z">
+<meta property="article:author" content="Tu Yuheng">
+<meta property="article:tag" content="计算机算法">
+<meta property="article:tag" content="力扣">
+<meta property="article:tag" content="hot100">
+<meta property="article:tag" content="图论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fupingyezi.github.io/images/algorithm/20250803/Pasted-image-20250803120723.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Tu Yuheng's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css">
+
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="算法修炼手册day15-图论">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">算法修炼手册day15-图论</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-12.图论专题" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/08/03/12.%E5%9B%BE%E8%AE%BA%E4%B8%93%E9%A2%98/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-08-02T16:00:00.000Z" itemprop="datePublished">2025-08-03</time>
+    <time style="display: none;" id="post-update-time">2025-08-03</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="一、图的基本概念及常见算法"><a href="#一、图的基本概念及常见算法" class="headerlink" title="一、图的基本概念及常见算法"></a>一、图的基本概念及常见算法</h2><blockquote>
+<p>以下由ai生成。</p>
+<h3 id="一、基本概念"><a href="#一、基本概念" class="headerlink" title="一、基本概念"></a>一、基本概念</h3></blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>顶点（Vertex）</strong></td>
+<td>图中的节点，通常用 V 表示</td>
+</tr>
+<tr>
+<td><strong>边（Edge）</strong></td>
+<td>顶点之间的连接，通常用 E 表示</td>
+</tr>
+<tr>
+<td><strong>无向图</strong></td>
+<td>边没有方向，(A,B) 和 (B,A) 是相同的</td>
+</tr>
+<tr>
+<td><strong>有向图</strong></td>
+<td>边有方向，<a,b> 和 <b,a> 是不同的</b,a></a,b></td>
+</tr>
+<tr>
+<td><strong>权值（Weight）</strong></td>
+<td>边上的数值，表示距离、代价等</td>
+</tr>
+<tr>
+<td><strong>度（Degree）</strong></td>
+<td>与顶点相连的边数（有向图分为入度和出度）</td>
+</tr>
+<tr>
+<td><strong>路径（Path）</strong></td>
+<td>从一个顶点到另一个顶点经过的顶点序列</td>
+</tr>
+<tr>
+<td><strong>环（Cycle）</strong></td>
+<td>起点和终点相同的路径</td>
+</tr>
+<tr>
+<td><strong>连通图</strong></td>
+<td>任意两个顶点之间都有路径（无向图）</td>
+</tr>
+<tr>
+<td><strong>强连通图</strong></td>
+<td>任意两个顶点之间互相可达（有向图）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="二、图的表示方法"><a href="#二、图的表示方法" class="headerlink" title="二、图的表示方法"></a>二、图的表示方法</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>邻接矩阵</strong></td>
+<td>查询快 O(1)</td>
+<td>空间浪费 O(n²)</td>
+<td>稠密图</td>
+</tr>
+<tr>
+<td><strong>邻接表</strong></td>
+<td>空间节省 O(V+E)</td>
+<td>查询慢 O(degree)</td>
+<td>稀疏图</td>
+</tr>
+<tr>
+<td><strong>边集数组</strong></td>
+<td>适合按边遍历</td>
+<td>查询慢</td>
+<td>最小生成树、Kruskal</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="三、图的遍历算法"><a href="#三、图的遍历算法" class="headerlink" title="三、图的遍历算法"></a>三、图的遍历算法</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>特点</th>
+<th>实现方式</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DFS（深度优先）</strong></td>
+<td>递归/栈，探索到底</td>
+<td>递归或显式栈</td>
+<td>O(V+E)</td>
+</tr>
+<tr>
+<td><strong>BFS（广度优先）</strong></td>
+<td>队列，层层推进</td>
+<td>队列</td>
+<td>O(V+E)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="四、最短路径算法"><a href="#四、最短路径算法" class="headerlink" title="四、最短路径算法"></a>四、最短路径算法</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>特点</th>
+<th>适用场景</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dijkstra</strong></td>
+<td>非负权图</td>
+<td>单源最短路径</td>
+<td>O((V+E)logV)</td>
+</tr>
+<tr>
+<td><strong>Bellman-Ford</strong></td>
+<td>可处理负权边</td>
+<td>检测负环</td>
+<td>O(VE)</td>
+</tr>
+<tr>
+<td><strong>SPFA</strong></td>
+<td>Bellman-Ford优化</td>
+<td>稀疏图</td>
+<td>平均O(E)，最坏O(VE)</td>
+</tr>
+<tr>
+<td><strong>Floyd-Warshall</strong></td>
+<td>多源最短路径</td>
+<td>稠密图</td>
+<td>O(V³)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="五、最小生成树（MST）"><a href="#五、最小生成树（MST）" class="headerlink" title="五、最小生成树（MST）"></a>五、最小生成树（MST）</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>特点</th>
+<th>实现方式</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prim</strong></td>
+<td>贪心，加点法</td>
+<td>优先队列</td>
+<td>O((V+E)logV)</td>
+</tr>
+<tr>
+<td><strong>Kruskal</strong></td>
+<td>贪心，加边法</td>
+<td>并查集</td>
+<td>O(ElogE)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="六、拓扑排序"><a href="#六、拓扑排序" class="headerlink" title="六、拓扑排序"></a>六、拓扑排序</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>有向无环图（DAG）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方法</td>
+<td>① Kahn（BFS） ② DFS逆后序</td>
+</tr>
+<tr>
+<td>应用</td>
+<td>任务调度、依赖关系、课程安排</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="二、算法详解"><a href="#二、算法详解" class="headerlink" title="二、算法详解"></a>二、算法详解</h2><h3 id="一、图的遍历算法"><a href="#一、图的遍历算法" class="headerlink" title="一、图的遍历算法"></a>一、图的遍历算法</h3><p>图的遍历算法有两种，分别为深度优先搜索和广度优先搜索，我们在树专题其实有所接触，到图论这个专题详细分析一下这两种算法：</p>
+<ul>
+<li>深度优先搜索（Depth-First-Search，缩写为 DFS）：基于递归实现的算法，遍历过程是一条路径遍历完了才会遍历另外一条，类似不撞南墙不回头。</li>
+<li>广度优先搜索（Breadth-First-Search，缩写为 BFS）：基于队列实现的算法，遍历过程是一层一层扩大的，类似水面涟漪。<br>对于两者的区别直观体验，可以参考二叉树的先中后序遍历和层序遍历的区别，前者是深搜，后者是广搜。所以二者的应用场景也有所区别：</li>
+<li>对于广搜，其会存储所有节点，适合查找全局最优解，所以最短路问题一般用到广搜。</li>
+<li>对应深搜，其递归的特性更适合回溯问题，如果查找最优解可能会陷入局部最优解。<h4 id="邻接矩阵遍历算法"><a href="#邻接矩阵遍历算法" class="headerlink" title="邻接矩阵遍历算法"></a>邻接矩阵遍历算法</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//邻接矩阵存储</span></span><br><span class="line"><span class="keyword">const</span> dir = [</span><br><span class="line">    [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">    [<span class="number">0</span>, -<span class="number">1</span>],</span><br><span class="line">    [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">    [-<span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">]</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">dfs</span> = (<span class="params">graph, visited, x, y</span>) =&gt; {</span><br><span class="line">    <span class="keyword">if</span> (!visited[x][y]) {</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(x, y);</span><br><span class="line">        visited[x][y] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) {</span><br><span class="line">            <span class="keyword">const</span> nx = x + dir[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">const</span> ny = y + dir[i][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span>(nx &gt;= <span class="number">0</span> &amp;&amp; nx &lt; graph.<span class="property">length</span> &amp;&amp; ny &gt;= <span class="number">0</span> &amp;&amp; ny &lt; graph[<span class="number">0</span>].<span class="property">length</span>) {</span><br><span class="line">                <span class="title function_">dfs</span>(graph, visited, nx, ny);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">bfs</span> = (<span class="params">graph, visited, x, y</span>) =&gt; {</span><br><span class="line">	visited[x][y] = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">const</span> queue = [[x, y]];</span><br><span class="line">    <span class="keyword">while</span>(queue.<span class="property">length</span>) {</span><br><span class="line">        <span class="keyword">const</span> [x, y] = queue.<span class="title function_">shift</span>();</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(x, y);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) {</span><br><span class="line">            <span class="keyword">const</span> nx = x + dir[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">const</span> ny = y + dir[i][<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span>(nx &gt;= <span class="number">0</span> &amp;&amp; nx &lt; graph.<span class="property">length</span> &amp;&amp; ny &gt;= <span class="number">0</span> &amp;&amp; ny &lt; graph[<span class="number">0</span>].<span class="property">length</span>) {</span><br><span class="line">                visited[nx][ny] = <span class="literal">true</span>;</span><br><span class="line">                queue.<span class="title function_">push</span>([nx, ny]);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h4 id="领接表遍历算法"><a href="#领接表遍历算法" class="headerlink" title="领接表遍历算法"></a>领接表遍历算法</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//领接表存储</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">dfs</span> = (<span class="params">graph, visited, x</span>) =&gt; {</span><br><span class="line">    <span class="keyword">if</span> (!visited[x]) {</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(x);</span><br><span class="line">        visited[x] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; graph[x].<span class="property">length</span>; i++) {</span><br><span class="line">            <span class="title function_">dfs</span>(graph, visited, graph[x][i]);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">bfs</span> = (<span class="params">graph, visited, x</span>) =&gt; {</span><br><span class="line">	visited[x] = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">const</span> queue = [x];</span><br><span class="line">    <span class="keyword">while</span>(queue.<span class="property">length</span>) {</span><br><span class="line">        <span class="keyword">const</span> x = queue.<span class="title function_">shift</span>();</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(x);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; graph[x].<span class="property">length</span>; i++) {</span><br><span class="line">            <span class="keyword">if</span>(!visited[graph[x][i]]) {</span><br><span class="line">	            visited[graph[x][i]] = <span class="literal">true</span>;</span><br><span class="line">                queue.<span class="title function_">push</span>(graph[x][i]);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h3 id="二、拓扑排序"><a href="#二、拓扑排序" class="headerlink" title="二、拓扑排序"></a>二、拓扑排序</h3><h5 id="拓扑算法"><a href="#拓扑算法" class="headerlink" title="拓扑算法"></a>拓扑算法</h5>拓扑排序要解决的问题是如何给一个有向无环图的所有节点排序，常用于排班表、活动表等等场景。<br>要实现拓扑排序，首先要了解出度和入度这两个概念：</li>
+<li>对于有向图，有一条弧从该节点出发指向另一个节点，记为出度+1。</li>
+<li>对于有向图，有一条弧从其他节点出发指向该节点，记为入度+1。<br>为什么要用到这两个东西呢？</li>
+<li>对一个工程，其有一个或多个前驱工程，则在排版图中，这几个前驱工程指向这个工程，这个工程的入度即为前驱工程的个数。</li>
+<li>这点对这几个前驱工程同理。</li>
+<li>那么对于这个工程是否能够开工，必然要其所有前驱工程完工，即每一个前驱工程完成，我们删除这个前驱工程，所以到该工程项目开工时，其无前驱工程，入度为0。</li>
+<li>而这一个大工程能开工的第一批子项目，必然是没有前驱的，入度也为0。<br>所以你明白入度是干什么的了，而上述其实也点明了拓扑排序的流程。</li>
+<li>初始化所有结点的入度。</li>
+<li>所有入度为0的结点入队。</li>
+<li>删除所有入度为0的节点，其后继节点入度-1。</li>
+<li>下一批所有入度为0的节点入队，依次类推。<br>拓扑排序的时间复杂度为：<code>o(V+E)</code>，即所有边+顶点。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//拓扑排序</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">topologicalSorting</span> = (<span class="params">graph</span>) =&gt; {</span><br><span class="line">    <span class="keyword">const</span> ind = <span class="keyword">new</span> <span class="title class_">Map</span>(); <span class="comment">// 存储每个节点的入度</span></span><br><span class="line">    <span class="keyword">const</span> queue = []; <span class="comment">// 存储入度为0的节点</span></span><br><span class="line">    <span class="keyword">const</span> result = []; <span class="comment">// 存储拓扑排序结果</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化入度</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> node <span class="keyword">of</span> graph) {</span><br><span class="line">        ind.<span class="title function_">set</span>(node, <span class="number">0</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// 计算每个节点的入度</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> node <span class="keyword">of</span> graph) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> next <span class="keyword">of</span> node.<span class="property">nexts</span>) {</span><br><span class="line">            ind.<span class="title function_">set</span>(next, ind.<span class="title function_">get</span>(next) + <span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将入度为0的节点加入队列</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> node <span class="keyword">of</span> graph) {</span><br><span class="line">        <span class="keyword">if</span> (ind.<span class="title function_">get</span>(node) === <span class="number">0</span>) {</span><br><span class="line">            queue.<span class="title function_">push</span>(node);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 拓扑排序</span></span><br><span class="line">    <span class="keyword">while</span> (queue.<span class="property">length</span>) {</span><br><span class="line">        <span class="keyword">const</span> node = queue.<span class="title function_">shift</span>(); <span class="comment">// 取出入度为0的节点</span></span><br><span class="line">        result.<span class="title function_">push</span>(node); <span class="comment">// 将节点加入结果数组</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> next <span class="keyword">of</span> node.<span class="property">nexts</span>) { <span class="comment">// 更新后继节点的入度</span></span><br><span class="line">            ind.<span class="title function_">set</span>(next, ind.<span class="title function_">get</span>(next) - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> (ind.<span class="title function_">get</span>(next) === <span class="number">0</span>) { <span class="comment">// 如果后继节点的入度为0，加入队列</span></span><br><span class="line">                queue.<span class="title function_">push</span>(next);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h4 id="拓扑判环"><a href="#拓扑判环" class="headerlink" title="拓扑判环"></a>拓扑判环</h4>如果图中有环怎么办？<br>即一个工程的前驱工程需要这个工程，这样显然是不可能安排的。<br>我们简单推理一下判环逻辑：</li>
+<li>若环包含整个图，则没有说明初始化没有入度为0的结点，直接返回错误。</li>
+<li>若环是局部的，我们将这个局部环拎出来，当遍历到环的起点时，此时有两种情况，广搜队中只有环的前驱且所以前驱不指向终点，此时所有前驱出队，但环的入度减不到0，直接结束；若有前驱指向环的终点，则终点会入队两次。</li>
+<li>综上，无论那种情况，最终处理的节点数必然不等于环的顶点数。所以最后进行这样一下判断即可。<br>当然我们还有一种dfs方案：</li>
+<li>我们对一个节点设定三种状态，未访问，访问中，已访问。</li>
+<li>如果访问过程中的节点有结点初识就为访问中状态或者结束后还有未访问状态的节点，即含环。<h1 id="一、岛屿数量"><a href="#一、岛屿数量" class="headerlink" title="一、岛屿数量"></a>一、岛屿数量</h1><blockquote>
+<p>主考知识点：图论、深搜、广搜，难度中等<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-islands/description/?envType=study-plan-v2&amp;envId=top-100-liked">200. 岛屿数量 - 力扣（LeetCode）</a></p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/images/algorithm/20250803/Pasted-image-20250803120723.png" alt="preview"><br><img src="/images/algorithm/20250803/Pasted-image-20250803120749.png" alt="preview"><br>典型的图论遍历题，深搜广搜都适用。<br>具体思路：</p>
+<ul>
+<li>按照深搜广搜的常规思路，我们初始化一个<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.025ex;" xmlns="http://www.w3.org/2000/svg" width="2.939ex" height="1.52ex" role="img" focusable="false" viewBox="0 -661 1299 672"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D463" d="M173 380Q173 405 154 405Q130 405 104 376T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Q21 294 29 316T53 368T97 419T160 441Q202 441 225 417T249 361Q249 344 246 335Q246 329 231 291T200 202T182 113Q182 86 187 69Q200 26 250 26Q287 26 319 60T369 139T398 222T409 277Q409 300 401 317T383 343T365 361T357 383Q357 405 376 424T417 443Q436 443 451 425T467 367Q467 340 455 284T418 159T347 40T241 -11Q177 -11 139 22Q102 54 102 117Q102 148 110 181T151 298Q173 362 173 380Z"></path></g><g data-mml-node="mi" transform="translate(485,0)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mi" transform="translate(830,0)"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g></g></g></svg></mjx-container>数组来标记每个点我们是否访问过。</li>
+<li>然后我们枚举每一个起点，如果其为岛屿，通过深搜或者广搜把岛屿的所有点标记为访问，这样就保证了每个岛屿我们只会访问一次。</li>
+<li>所以每次枚举到岛屿加一即可。<br>时间复杂度：<code>o(mn)</code><h3 id="解法一：深度优先搜索"><a href="#解法一：深度优先搜索" class="headerlink" title="解法一：深度优先搜索"></a>解法一：深度优先搜索</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">character[][]</span>} <span class="variable">grid</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> {<span class="type">number</span>}</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> numIslands = <span class="keyword">function</span> (<span class="params">grid</span>) {</span><br><span class="line">    <span class="keyword">const</span> m = grid.<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">const</span> n = grid[<span class="number">0</span>].<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">const</span> vis = <span class="title class_">Array</span>.<span class="title function_">from</span>({ <span class="attr">length</span>: m }, <span class="function">() =&gt;</span> <span class="title class_">Array</span>(n).<span class="title function_">fill</span>(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">const</span> dir = [</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">0</span>, -<span class="number">1</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [-<span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">dfs</span> = (<span class="params">x, y</span>) =&gt; {</span><br><span class="line">        <span class="keyword">if</span> (vis[x][y]) <span class="keyword">return</span>;</span><br><span class="line">        vis[x][y] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) {</span><br><span class="line">            <span class="keyword">const</span> nx = x + dir[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">const</span> ny = y + dir[i][<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (nx &gt;= <span class="number">0</span> &amp;&amp; nx &lt; m &amp;&amp; ny &gt;= <span class="number">0</span> &amp;&amp; ny &lt; n &amp;&amp; grid[nx][ny] === <span class="string">'1'</span> &amp;&amp; !vis[nx][ny]) {</span><br><span class="line">                <span class="title function_">dfs</span>(nx, ny);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; m; i++) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; n; j++) {</span><br><span class="line">            <span class="keyword">if</span> (!vis[i][j] &amp;&amp; grid[i][j] !== <span class="string">'0'</span>) {</span><br><span class="line">                res++;</span><br><span class="line">                <span class="title function_">dfs</span>(i, j);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+<h3 id="解法二：广度优先搜索"><a href="#解法二：广度优先搜索" class="headerlink" title="解法二：广度优先搜索"></a>解法二：广度优先搜索</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">character[][]</span>} <span class="variable">grid</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> {<span class="type">number</span>}</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> numIslands = <span class="keyword">function</span> (<span class="params">grid</span>) {</span><br><span class="line">    <span class="keyword">const</span> m = grid.<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">const</span> n = grid[<span class="number">0</span>].<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">const</span> vis = <span class="title class_">Array</span>.<span class="title function_">from</span>({ <span class="attr">length</span>: m }, <span class="function">() =&gt;</span> <span class="title class_">Array</span>(n).<span class="title function_">fill</span>(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">const</span> dir = [</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">0</span>, -<span class="number">1</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [-<span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">bfs</span> = (<span class="params">x, y</span>) =&gt; {</span><br><span class="line">        <span class="keyword">const</span> queue = [[x, y]];</span><br><span class="line">        <span class="keyword">while</span> (queue.<span class="property">length</span>) {</span><br><span class="line">            <span class="keyword">const</span> [x, y] = queue.<span class="title function_">shift</span>();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) {</span><br><span class="line">                <span class="keyword">const</span> nx = x + dir[i][<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">const</span> ny = y + dir[i][<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (nx &gt;= <span class="number">0</span> &amp;&amp; nx &lt; m &amp;&amp; ny &gt;= <span class="number">0</span> &amp;&amp; ny &lt; n &amp;&amp; grid[nx][ny] === <span class="string">'1'</span> &amp;&amp; !vis[nx][ny]) {</span><br><span class="line">                    vis[nx][ny] = <span class="number">1</span>;</span><br><span class="line">                    queue.<span class="title function_">push</span>([nx, ny]);</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; m; i++) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; n; j++) {</span><br><span class="line">            <span class="keyword">if</span> (!vis[i][j] &amp;&amp; grid[i][j] !== <span class="string">'0'</span>) {</span><br><span class="line">                res++;</span><br><span class="line">                vis[i][j] = <span class="number">1</span>;</span><br><span class="line">                <span class="title function_">bfs</span>(i, j);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+<h1 id="二、腐烂的橘子"><a href="#二、腐烂的橘子" class="headerlink" title="二、腐烂的橘子"></a>二、腐烂的橘子</h1><blockquote>
+<p>主考知识点：图论，广度优先搜索，难度中等<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rotting-oranges/description/?envType=study-plan-v2&amp;envId=top-100-liked">994. 腐烂的橘子 - 力扣（LeetCode）</a></p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/images/algorithm/20250803/Pasted-image-20250803124131.png" alt="preview"><br><img src="/images/algorithm/20250803/Pasted-image-20250803124146.png" alt="preview"><br>直观的一个思路跟上一题一样，枚举每一个点，遇到腐烂的橘子后把相邻的全部腐烂。但这样我们最后还得再遍历一次查找一下是否还有新鲜橘子，比较麻烦，每次广搜还得记录分钟数，我们考虑更简洁的。</p>
+<ul>
+<li>既然是要把所有腐烂的橘子都枚举一遍，我们不妨使用广度优先搜索，首先遍历一遍将所有腐烂橘子放入广搜队列之中，同时记录新鲜橘子的个数。</li>
+<li>然后再开始广搜，每腐烂一个新鲜橘子也记录下来。最后无可腐烂橘子后对比，若腐烂的新鲜橘子不足之前记录的个数，说明不可能，否则返回分钟数，分钟数可以用新鲜橘子距离腐烂橘子的距离表示，同时分钟数不为<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="1.131ex" height="1.557ex" role="img" focusable="false" viewBox="0 -666 500 688"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path></g></g></g></svg></mjx-container>的格子也说明其已经被腐烂。</li>
+<li>这也叫做多源广度优先搜索。<br>时间复杂度：<code>o(mn)</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">number[][]</span>} <span class="variable">grid</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> {<span class="type">number</span>}</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> orangesRotting = <span class="keyword">function</span> (<span class="params">grid</span>) {</span><br><span class="line">    <span class="keyword">const</span> m = grid.<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">const</span> n = grid[<span class="number">0</span>].<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">const</span> dist = <span class="title class_">Array</span>.<span class="title function_">from</span>({ <span class="attr">length</span>: m }, <span class="function">() =&gt;</span> <span class="title class_">Array</span>(n).<span class="title function_">fill</span>(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">const</span> dir = [</span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">0</span>, -<span class="number">1</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">        [-<span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line">    ]</span><br><span class="line">    <span class="keyword">let</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">const</span> queue = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; m; i++) {</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; n; j++) {</span><br><span class="line">            <span class="keyword">if</span> (grid[i][j] === <span class="number">1</span>) cnt++;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (grid[i][j] === <span class="number">2</span>) queue.<span class="title function_">push</span>([i, j]);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">let</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (queue.<span class="property">length</span>) {</span><br><span class="line">        <span class="keyword">const</span> [x, y] = queue.<span class="title function_">shift</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> d <span class="keyword">of</span> dir) {</span><br><span class="line">            <span class="keyword">const</span> nx = x + d[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">const</span> ny = y + d[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (nx &lt; <span class="number">0</span> || nx &gt;= m || ny &lt; <span class="number">0</span> || ny &gt;= n || dist[nx][ny] || !grid[nx][ny])</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span> (grid[nx][ny] === <span class="number">1</span>) {</span><br><span class="line">                cnt--;</span><br><span class="line">                dist[nx][ny] = dist[x][y] + <span class="number">1</span>;</span><br><span class="line">                queue.<span class="title function_">push</span>([nx, ny]);</span><br><span class="line">                ans = dist[nx][ny];</span><br><span class="line">                <span class="keyword">if</span>(!cnt) <span class="keyword">break</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> cnt ? -<span class="number">1</span> : ans;</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+<h1 id="三、课程表"><a href="#三、课程表" class="headerlink" title="三、课程表"></a>三、课程表</h1><blockquote>
+<p>主考知识点：图论、深搜、广搜、拓扑排序，难度中等<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/course-schedule/description/?envType=study-plan-v2&amp;envId=top-100-liked">207. 课程表 - 力扣（LeetCode）</a></p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/images/algorithm/20250803/Pasted-image-20250803130816.png" alt="preview"><br><img src="/images/algorithm/20250803/Pasted-image-20250803130827.png" alt="preview"><br>这题基本就是前言里讲拓扑排序+判环的模版题，多了一步自己建边而已，不多说。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">number</span>} <span class="variable">numCourses</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">number[][]</span>} <span class="variable">prerequisites</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> {<span class="type">boolean</span>}</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> canFinish = <span class="keyword">function</span> (<span class="params">numCourses, prerequisites</span>) {</span><br><span class="line">    <span class="keyword">const</span> ind = <span class="keyword">new</span> <span class="title class_">Array</span>(numCourses).<span class="title function_">fill</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">const</span> edge = <span class="title class_">Array</span>.<span class="title function_">from</span>({ <span class="attr">length</span>: numCourses }, <span class="function">() =&gt;</span> []);</span><br><span class="line">    <span class="keyword">const</span> queue = [];</span><br><span class="line">    <span class="keyword">let</span> cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> [a, b] <span class="keyword">of</span> prerequisites) {</span><br><span class="line">        ind[a]++;</span><br><span class="line">        edge[b].<span class="title function_">push</span>(a);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; numCourses; i++) {</span><br><span class="line">        <span class="keyword">if</span> (ind[i] === <span class="number">0</span>) {</span><br><span class="line">            cnt++;</span><br><span class="line">            queue.<span class="title function_">push</span>(i);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (queue.<span class="property">length</span>) {</span><br><span class="line">        <span class="keyword">const</span> x = queue.<span class="title function_">shift</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> nx <span class="keyword">of</span> edge[x]) {</span><br><span class="line">            ind[nx]--;</span><br><span class="line">            <span class="keyword">if</span> (!ind[nx]) {</span><br><span class="line">                cnt++;</span><br><span class="line">                queue.<span class="title function_">push</span>(nx);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> cnt === numCourses;</span><br><span class="line">};</span><br></pre></td></tr></table></figure></p>
+<h1 id="四、实现Trie-前缀树"><a href="#四、实现Trie-前缀树" class="headerlink" title="四、实现Trie(前缀树)"></a>四、实现Trie(前缀树)</h1><blockquote>
+<p>主考知识点：设计、哈希表、字典树、图论、深搜，难度中等<br>其实我有点不理解为什么力扣把他放在图论里面。<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/implement-trie-prefix-tree/description/?envType=study-plan-v2&amp;envId=top-100-liked">208. 实现 Trie (前缀树) - 力扣（LeetCode）</a></p>
+</blockquote>
+<p><img src="/images/algorithm/20250803/Pasted-image-20250803151210.png" alt="preview"><br><img src="/images/algorithm/20250803/Pasted-image-20250803151222.png" alt="preview"><br>其实就是建立一个字典树：</p>
+<ul>
+<li>因为单词均有小写字母组成，所以我们每个节点的孩子为<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.05ex;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.557ex" role="img" focusable="false" viewBox="0 -666 1000 688"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path data-c="36" d="M42 313Q42 476 123 571T303 666Q372 666 402 630T432 550Q432 525 418 510T379 495Q356 495 341 509T326 548Q326 592 373 601Q351 623 311 626Q240 626 194 566Q147 500 147 364L148 360Q153 366 156 373Q197 433 263 433H267Q313 433 348 414Q372 400 396 374T435 317Q456 268 456 210V192Q456 169 451 149Q440 90 387 34T253 -22Q225 -22 199 -14T143 16T92 75T56 172T42 313ZM257 397Q227 397 205 380T171 335T154 278T148 216Q148 133 160 97T198 39Q222 21 251 21Q302 21 329 59Q342 77 347 104T352 209Q352 289 347 316T329 361Q302 397 257 397Z" transform="translate(500,0)"></path></g></g></g></svg></mjx-container>个。</li>
+<li>我们可以用数组、对象、邻接表来表示这种对应关系。例如下面我才用的对象。</li>
+<li>则对象结构：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Trie</span>:</span><br><span class="line">{</span><br><span class="line">	...;</span><br><span class="line">	<span class="attr">chilren</span>: {</span><br><span class="line">		<span class="attr">a</span>: {</span><br><span class="line">			...,</span><br><span class="line">			<span class="attr">children</span>:...</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+所以代码：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title class_">Trie</span> = <span class="keyword">function</span>(<span class="params"></span>) {</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">children</span>={};</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">string</span>} <span class="variable">word</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> {<span class="type">void</span>}</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="title class_">Trie</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">insert</span> = <span class="keyword">function</span>(<span class="params">word</span>) {</span><br><span class="line">    <span class="keyword">let</span> node = <span class="variable language_">this</span>.<span class="property">children</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> s <span class="keyword">of</span> word) {</span><br><span class="line">        <span class="keyword">if</span>(!node[s]) {</span><br><span class="line">            node[s]={};</span><br><span class="line">        }</span><br><span class="line">        node=node[s];</span><br><span class="line">    }</span><br><span class="line">    node.<span class="property">isEnd</span>=<span class="literal">true</span>;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">string</span>} <span class="variable">word</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> {<span class="type">boolean</span>}</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="title class_">Trie</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">search</span> = <span class="keyword">function</span>(<span class="params">word</span>) {</span><br><span class="line">    <span class="keyword">let</span> node=<span class="variable language_">this</span>.<span class="property">children</span>;</span><br><span class="line">    <span class="keyword">let</span> i;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>; i&lt;word.<span class="property">length</span>; i++) {</span><br><span class="line">        <span class="keyword">if</span>(node[word[i]]) {</span><br><span class="line">            node=node[word[i]];</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span>(node.<span class="property">isEnd</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> {<span class="type">string</span>} <span class="variable">prefix</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> {<span class="type">boolean</span>}</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="title class_">Trie</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">startsWith</span> = <span class="keyword">function</span>(<span class="params">prefix</span>) {</span><br><span class="line">    <span class="keyword">let</span> node = <span class="variable language_">this</span>.<span class="property">children</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> s <span class="keyword">of</span> prefix) {</span><br><span class="line">        <span class="keyword">if</span>(!node[s]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        node=node[s];</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * Your Trie object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * var obj = new Trie()</span></span><br><span class="line"><span class="comment"> * obj.insert(word)</span></span><br><span class="line"><span class="comment"> * var param_2 = obj.search(word)</span></span><br><span class="line"><span class="comment"> * var param_3 = obj.startsWith(prefix)</span></span><br><span class="line"><span class="comment"> *</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/hot100/" rel="tag">hot100</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%8A%9B%E6%89%A3/" rel="tag">力扣</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%AE%97%E6%B3%95/" rel="tag">计算机算法</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day14-堆" class="lazyload">
+        
+      
+      <a href="/2025/08/02/11.%E5%A0%86%E4%B8%93%E9%A2%98/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          算法修炼手册day14-堆
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">一、图的基本概念及常见算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.1.</span> <span class="toc-text">一、基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.2.</span> <span class="toc-text">二、图的表示方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.3.</span> <span class="toc-text">三、图的遍历算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.4.</span> <span class="toc-text">四、最短路径算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%EF%BC%88MST%EF%BC%89"><span class="toc-number">1.1.5.</span> <span class="toc-text">五、最小生成树（MST）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.6.</span> <span class="toc-text">六、拓扑排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">二、算法详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">一、图的遍历算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">邻接矩阵遍历算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%86%E6%8E%A5%E8%A1%A8%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">领接表遍历算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">二、拓扑排序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.2.0.1.</span> <span class="toc-text">拓扑算法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E5%88%A4%E7%8E%AF"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">拓扑判环</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%B2%9B%E5%B1%BF%E6%95%B0%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">一、岛屿数量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80%EF%BC%9A%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">2.0.1.</span> <span class="toc-text">解法一：深度优先搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">2.0.2.</span> <span class="toc-text">解法二：广度优先搜索</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%85%90%E7%83%82%E7%9A%84%E6%A9%98%E5%AD%90"><span class="toc-number">3.</span> <span class="toc-text">二、腐烂的橘子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%AF%BE%E7%A8%8B%E8%A1%A8"><span class="toc-number">4.</span> <span class="toc-text">三、课程表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E7%8E%B0Trie-%E5%89%8D%E7%BC%80%E6%A0%91"><span class="toc-number">5.</span> <span class="toc-text">四、实现Trie(前缀树)</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">18</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">23</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2025
+      <span class="footer-info-sep"></span>
+      Tu Yuheng
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        70.3k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        04:46
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9B%BE%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%8F%8A%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">一、图的基本概念及常见算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.1.</span> <span class="toc-text">一、基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%BE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.2.</span> <span class="toc-text">二、图的表示方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.3.</span> <span class="toc-text">三、图的遍历算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.4.</span> <span class="toc-text">四、最短路径算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%EF%BC%88MST%EF%BC%89"><span class="toc-number">1.1.5.</span> <span class="toc-text">五、最小生成树（MST）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.6.</span> <span class="toc-text">六、拓扑排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">二、算法详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">一、图的遍历算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%BB%E6%8E%A5%E7%9F%A9%E9%98%B5%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">邻接矩阵遍历算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%86%E6%8E%A5%E8%A1%A8%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">领接表遍历算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">二、拓扑排序</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.2.0.1.</span> <span class="toc-text">拓扑算法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%93%E6%89%91%E5%88%A4%E7%8E%AF"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">拓扑判环</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%B2%9B%E5%B1%BF%E6%95%B0%E9%87%8F"><span class="toc-number">2.</span> <span class="toc-text">一、岛屿数量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80%EF%BC%9A%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">2.0.1.</span> <span class="toc-text">解法一：深度优先搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C%EF%BC%9A%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2"><span class="toc-number">2.0.2.</span> <span class="toc-text">解法二：广度优先搜索</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%85%90%E7%83%82%E7%9A%84%E6%A9%98%E5%AD%90"><span class="toc-number">3.</span> <span class="toc-text">二、腐烂的橘子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%AF%BE%E7%A8%8B%E8%A1%A8"><span class="toc-number">4.</span> <span class="toc-text">三、课程表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E7%8E%B0Trie-%E5%89%8D%E7%BC%80%E6%A0%91"><span class="toc-number">5.</span> <span class="toc-text">四、实现Trie(前缀树)</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">18</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">23</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.6/dist/index.umd.js" integrity="sha384-vkGvf25gm1C1PbcoD5dNfc137HzNL&#x2F;hr1RKA5HniJOaawtvUmH5lTVFgFAruE9Ge" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+
