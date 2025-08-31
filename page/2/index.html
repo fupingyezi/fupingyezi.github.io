@@ -297,6 +297,103 @@ mjx-container[display="true"] + br {
     <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
+      <a class="post-link" href="/2025/07/26/7.%E4%BD%8D%E8%BF%90%E7%AE%97+%E6%8E%92%E5%BA%8F%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day7-位运算和排序"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day7-位运算和排序" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-26</span>
+        <span><span class="icon-pencil"></span>3.3k words</span>
+        <span><span class="icon-clock"></span>14 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day7-位运算和排序</h2>
+      <article class="post-article">
+        
+          前言位运算位运算我们知道
+
+
+
+
+符号
+描述
+运算规则
+实例（以四位二进制数为例）
+
+
+
+
+&amp;amp;
+与
+两个位都为1时，结果才为1。
+0001 &amp;amp; 0001 = 0001, 0001 &amp;amp; 0000 = 0000, 0000 &amp;amp; 0000 = 0000
+
+
+\
+
+或
+两个位中只要有一个为1，结果就为1。
+0001 \
+0001 = 0001, 0001 \
+0000 = 0001, 0000 \
+0000 = 0000
+
+
+^
+异或
+两个位相同为0，相异为1。
+0001 ^ 0001 = 0000, 0001 ^ 0000 = 0001, 0000 ^ 0000 = 
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/07/25/6.%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day6-二分查找"></a>
+    
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day6-二分查找" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-07-25</span>
+        <span><span class="icon-pencil"></span>3.4k words</span>
+        <span><span class="icon-clock"></span>13 mins</span>
+      </div>
+      <h2 class="post-title">算法修炼手册day6-二分查找</h2>
+      <article class="post-article">
+        
+          前言二分查找（英语：binary search），也称折半搜索（英语：half-interval search）、对数搜索（英语：logarithmic search），是用来在一个有序数组中查找某一元素的算法，一般情况下我们这里的有序是指严格递增或递减，即不含重复元素，但如果非严格或者部分有序也可以视具体情况巧妙解决。
+过程具体就是在有序序列中查找一个目标，每次将序列折半，那么由于有序，必然有一半小于等于，一半大于等于，我们只关注当前这个中间点：
+
+中间点等于，直接返回
+中间点大于，那说明我们在大于的那一部分，想要找到，就在另一部分中继续二分。
+中间点小于，同理。这就是二分过程，很容易得出时
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
       <a class="post-link" href="/2025/07/23/5.%E7%9F%A9%E9%98%B5%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day5-矩阵"></a>
     
     
@@ -582,89 +679,6 @@ TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了一
   </div>
 </div>
   
-    <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
-    
-      <a class="post-link" href="/2024/12/05/%E5%B0%81%E8%A3%85%E3%80%81%E7%BB%A7%E6%89%BF%E3%80%81%E5%A4%9A%E6%80%81/" aria-label="深入C++封装、继承、多态"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="深入C++封装、继承、多态" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-12-05</span>
-        <span><span class="icon-pencil"></span>5.1k words</span>
-        <span><span class="icon-clock"></span>19 mins</span>
-      </div>
-      <h2 class="post-title">深入C++封装、继承、多态</h2>
-      <article class="post-article">
-        
-          封装、继承、多态1.封装
-将数据和操作数据的方法进行有机结合，隐藏对象的属性和实现细节，仅对外公开接口来和对象进行交互。
-
-2.继承
-
-用户通过已有的类定义新类，新类将拥有原有类的全部特性，原有类被称为基类(base class)或父类(super class)，新产生的类被称为派生类(derived class)或子类(subclass)，派生类拥有基类的特性称为继承，有基类产生派生类的过程称为派生。
-派生类有且只有一个基类的继承方式称为单继承或单向继承。
-派生类有两个或两个以上的基类的继承方式称为多继承或多重继承
-
-
-继承的定义定义语法：123class derivedClass : pu
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
-    <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-      <a class="post-link" href="/2024/11/29/React%20Hooks/" aria-label="深入浅出 React Hooks"></a>
-    
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="深入浅出 React Hooks" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2024-11-29</span>
-        <span><span class="icon-pencil"></span>6.3k words</span>
-        <span><span class="icon-clock"></span>26 mins</span>
-      </div>
-      <h2 class="post-title">深入浅出 React Hooks</h2>
-      <article class="post-article">
-        
-          深入浅出React Hooks
-先说一下HOOK的使用规则：
-
-只能在组件中或者其他自定义Hook函数中调用
-只能在组件的顶层调用，不能嵌套在if、for、其它的函数中
-
-
-渲染原理原生HTML+CSS+JAVASCRIPT渲染
-
-整体流程浏览器将HTML解析为DOM树，将CSS解析为样式CSSOM树，然后合成Render渲染树，然后渲染到页面上。是从上到下解析的一个过程。
-
-JavaScript渲染
-在解析HTML过程中，如果遇到script元素，会停止DOM树的构建，转而下载JavaScript代码并执行JavaScript脚本，待脚本结束后才会继续解析HTML。
-但这有可能会阻塞页面，所
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
 
 
   <nav id="page-nav" data-aos="fade-up">
@@ -687,7 +701,7 @@ JavaScript渲染
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">21</div>
+    <div class="sidebar-state-number">23</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -695,7 +709,7 @@ JavaScript渲染
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">26</div>
+    <div class="sidebar-state-number">29</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -760,10 +774,10 @@ JavaScript渲染
     
       <div>
         <span class="icon-brush"></span>
-        85.4k
+        94.9k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        05:49
+        06:30
       </div>
     
     
@@ -797,7 +811,7 @@ JavaScript渲染
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">21</div>
+    <div class="sidebar-state-number">23</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -805,7 +819,7 @@ JavaScript渲染
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">26</div>
+    <div class="sidebar-state-number">29</div>
   </div>
 </div>
 <div class="sidebar-social">

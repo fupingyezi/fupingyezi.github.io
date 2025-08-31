@@ -297,6 +297,80 @@ mjx-container[display="true"] + br {
     <div class="post-wrapper">
   <div class="post-wrap-left" data-aos="fade-up">
     
+      <a class="post-link" href="/2025/08/30/React%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90%E2%80%94%E2%80%94scheduler%E8%B0%83%E5%BA%A6%E7%AF%87/" aria-label="React原理解析——scheduler调度篇"></a>
+    
+    
+    <div class="post-cover-left">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="React原理解析——scheduler调度篇" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-08-30</span>
+        <span><span class="icon-pencil"></span>4k words</span>
+        <span><span class="icon-clock"></span>17 mins</span>
+      </div>
+      <h2 class="post-title">React原理解析——scheduler调度篇</h2>
+      <article class="post-article">
+        
+          
+本篇文章主要借鉴摸鱼老萌新-CSDN 博客这位大大的 React 源码解读系列
+
+我们知道，React 从代码到生成整个页面分为三个阶段：
+
+scheduler：调度阶段，生成task，通过lane调度task的优先级，使高优先级优先进入reconcile。
+reconciler：协调阶段，与调度器交互，创建、更新fiber树，更新采用diff算法给fiber树打上标记，双重缓冲机制（当前树和工作树）也在此处体现。
+render/commit：渲染阶段，初次渲染整个界面，后续将reconciler阶段提交的打上标记的新DOM从虚拟DOM渲染为真实DOM。本篇就详细讲述一下调度。
+
+sched
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-right" data-aos="fade-up">
+    
+      <a class="post-link" href="/2025/08/11/js%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E7%AF%87/" aria-label="前端面试篇——js手写"></a>
+    
+    
+    <div class="post-cover-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="前端面试篇——js手写" class="lazyload">
+        
+      
+    </div>
+    <div class="post-info">
+      <div class="post-meta">
+        <span><span class="icon-calendar"></span>2025-08-11</span>
+        <span><span class="icon-pencil"></span>5.4k words</span>
+        <span><span class="icon-clock"></span>24 mins</span>
+      </div>
+      <h2 class="post-title">前端面试篇——js手写</h2>
+      <article class="post-article">
+        
+          一、手写深拷贝
+从浅拷贝一步一步进步。
+
+我们知道浅拷贝是对引用数据的第一层拷贝，而深拷贝是一直拷贝到最后一层。
+浅拷贝所以我们很容易做到手写浅拷贝：
+123456789function shallowCopy(obj) {  if (typeof obj !== &#34;object&#34; || obj == null) return obj;  const newObj = Array.isArray(obj) ? [] : {};  for (let key in obj) {    if (obj.hasOwnProperty(key)) newObj[key] = obj[key];  }  
+        
+      </article>
+    </div>
+  </div>
+</div>
+  
+    <div class="post-wrapper">
+  <div class="post-wrap-left" data-aos="fade-up">
+    
       <a class="post-link" href="/2025/08/08/15.%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day18~day20-动态规划"></a>
     
     
@@ -648,103 +722,6 @@ mjx-container[display="true"] + br {
   </div>
 </div>
   
-    <div class="post-wrapper">
-  <div class="post-wrap-left" data-aos="fade-up">
-    
-      <a class="post-link" href="/2025/07/26/7.%E4%BD%8D%E8%BF%90%E7%AE%97+%E6%8E%92%E5%BA%8F%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day7-位运算和排序"></a>
-    
-    
-    <div class="post-cover-left">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day7-位运算和排序" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2025-07-26</span>
-        <span><span class="icon-pencil"></span>3.3k words</span>
-        <span><span class="icon-clock"></span>14 mins</span>
-      </div>
-      <h2 class="post-title">算法修炼手册day7-位运算和排序</h2>
-      <article class="post-article">
-        
-          前言位运算位运算我们知道
-
-
-
-
-符号
-描述
-运算规则
-实例（以四位二进制数为例）
-
-
-
-
-&amp;amp;
-与
-两个位都为1时，结果才为1。
-0001 &amp;amp; 0001 = 0001, 0001 &amp;amp; 0000 = 0000, 0000 &amp;amp; 0000 = 0000
-
-
-\
-
-或
-两个位中只要有一个为1，结果就为1。
-0001 \
-0001 = 0001, 0001 \
-0000 = 0001, 0000 \
-0000 = 0000
-
-
-^
-异或
-两个位相同为0，相异为1。
-0001 ^ 0001 = 0000, 0001 ^ 0000 = 0001, 0000 ^ 0000 = 
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
-    <div class="post-wrapper">
-  <div class="post-wrap-right" data-aos="fade-up">
-    
-      <a class="post-link" href="/2025/07/25/6.%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E4%B8%93%E9%A2%98/" aria-label="算法修炼手册day6-二分查找"></a>
-    
-    
-    <div class="post-cover-right">
-      
-        
-        
-          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="算法修炼手册day6-二分查找" class="lazyload">
-        
-      
-    </div>
-    <div class="post-info">
-      <div class="post-meta">
-        <span><span class="icon-calendar"></span>2025-07-25</span>
-        <span><span class="icon-pencil"></span>3.4k words</span>
-        <span><span class="icon-clock"></span>13 mins</span>
-      </div>
-      <h2 class="post-title">算法修炼手册day6-二分查找</h2>
-      <article class="post-article">
-        
-          前言二分查找（英语：binary search），也称折半搜索（英语：half-interval search）、对数搜索（英语：logarithmic search），是用来在一个有序数组中查找某一元素的算法，一般情况下我们这里的有序是指严格递增或递减，即不含重复元素，但如果非严格或者部分有序也可以视具体情况巧妙解决。
-过程具体就是在有序序列中查找一个目标，每次将序列折半，那么由于有序，必然有一半小于等于，一半大于等于，我们只关注当前这个中间点：
-
-中间点等于，直接返回
-中间点大于，那说明我们在大于的那一部分，想要找到，就在另一部分中继续二分。
-中间点小于，同理。这就是二分过程，很容易得出时
-        
-      </article>
-    </div>
-  </div>
-</div>
-  
 
 
   <nav id="page-nav" data-aos="fade-up">
@@ -767,7 +744,7 @@ mjx-container[display="true"] + br {
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">21</div>
+    <div class="sidebar-state-number">23</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -775,7 +752,7 @@ mjx-container[display="true"] + br {
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">26</div>
+    <div class="sidebar-state-number">29</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -840,10 +817,10 @@ mjx-container[display="true"] + br {
     
       <div>
         <span class="icon-brush"></span>
-        85.4k
+        94.9k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        05:49
+        06:30
       </div>
     
     
@@ -877,7 +854,7 @@ mjx-container[display="true"] + br {
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>Posts</div>
-    <div class="sidebar-state-number">21</div>
+    <div class="sidebar-state-number">23</div>
   </div>
   <div class="sidebar-state-category">
     <div>Categories</div>
@@ -885,7 +862,7 @@ mjx-container[display="true"] + br {
   </div>
   <div class="sidebar-state-tag">
     <div>Tags</div>
-    <div class="sidebar-state-number">26</div>
+    <div class="sidebar-state-number">29</div>
   </div>
 </div>
 <div class="sidebar-social">
