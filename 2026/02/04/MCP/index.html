@@ -1,0 +1,663 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    MCP: Model Context Protocol 模型上下文协议 |
+    
+    Tu Yuheng&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="MCP(Model Context Protocol)模型上下文协议，2024.11由Anthropic开源，作为一个新标准，其用于连接AI助手到存储数据的地方，包括内容库、业务工具和开发环境。目的是为了帮助前沿模型生成更好、更相关的回复。  Model Context ProtocolMCP是一个开发标准，使开发者能够在其数据源和AI驱动工具之间建立安全的双向链接。直观的，我们可以将其理解为一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MCP: Model Context Protocol 模型上下文协议">
+<meta property="og:url" content="http://fupingyezi.github.io/2026/02/04/MCP/index.html">
+<meta property="og:site_name" content="Tu Yuheng&#39;s Blog">
+<meta property="og:description" content="MCP(Model Context Protocol)模型上下文协议，2024.11由Anthropic开源，作为一个新标准，其用于连接AI助手到存储数据的地方，包括内容库、业务工具和开发环境。目的是为了帮助前沿模型生成更好、更相关的回复。  Model Context ProtocolMCP是一个开发标准，使开发者能够在其数据源和AI驱动工具之间建立安全的双向链接。直观的，我们可以将其理解为一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fupingyezi.github.io/images/mcp/Pasted-image-20260203124839.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/mcp/Pasted-image-20260203131150.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/mcp/Pasted-image-20260203142831.png">
+<meta property="article:published_time" content="2026-02-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-04T09:50:34.372Z">
+<meta property="article:author" content="Tu Yuheng">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="协议">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fupingyezi.github.io/images/mcp/Pasted-image-20260203124839.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Tu Yuheng's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css">
+
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="MCP: Model Context Protocol 模型上下文协议">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">MCP: Model Context Protocol 模型上下文协议</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-MCP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2026/02/04/MCP/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2026-02-03T16:00:00.000Z" itemprop="datePublished">2026-02-04</time>
+    <time style="display: none;" id="post-update-time">2026-02-04</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <blockquote>
+<p>MCP(Model Context Protocol)模型上下文协议，2024.11由Anthropic开源，作为一个新标准，其用于连接AI助手到存储数据的地方，包括内容库、业务工具和开发环境。目的是为了帮助前沿模型生成更好、更相关的回复。</p>
+</blockquote>
+<h3 id="Model-Context-Protocol"><a href="#Model-Context-Protocol" class="headerlink" title="Model Context Protocol"></a>Model Context Protocol</h3><p>MCP是一个开发标准，使开发者能够在其数据源和AI驱动工具之间建立安全的双向链接。直观的，我们可以将其理解为一个中间协议层，让开发者能够以一致的方式将各种数据源、工具和功能连接到AI模型，如下。<br><img src="/images/mcp/Pasted-image-20260203124839.png" alt=""></p>
+<p>但其实这样说复杂了，我们换个更易懂的说法。<br>MCP其实核心分为三个组件：Host、Client和Server。各部分关系如下，均由MCP架构链接在一起：<br><img src="/images/mcp/Pasted-image-20260203131150.png" alt=""><br>我们简单地理解这一过程：</p>
+<ul>
+<li>首先你对你的智能体应用（Host）提出了一些询问：比如今天北京天气如何？又或者帮我整理一下我E盘下某某文件夹下的文档。</li>
+<li>然后其中LLM在两个问题下分别决定访问远端网络服务器来搜索天气以及访问系统文件系统。此时内置的MCP Client激活，来连接对应MCP Server。</li>
+<li>比如在上面两个问题中，前者会访问用于连接远程网络服务的Server，后者则会连接本地文件系统资源的Server。</li>
+</ul>
+<p>对于这个过程，在提示词工程中有一个function_call的功能与之很相似，function_call就是给予LLM与外部工具连接的能力，比如外部网络API，知识库检索。当然这与tool_call也很相似。</p>
+<p>而MCP服务就像是把这一层function_call/tool_call进一步封装起来，解耦部署在了外部服务器，而不会被单个平台所局限。<br>而模型具体是如何选择MCP服务器的，具体可以看下图：<br><img src="/images/mcp/Pasted-image-20260203142831.png" alt=""><br>即通过提示词工程，将MCP服务器所有的tool的结构化描述提供给系统提示词。</p>
+<h3 id="搭建一个自己的MCP服务器"><a href="#搭建一个自己的MCP服务器" class="headerlink" title="搭建一个自己的MCP服务器"></a>搭建一个自己的MCP服务器</h3><p>so，了解上述前提之后，我们如何搭建一个MCP服务器呢？</p>
+<h4 id="1-环境搭建"><a href="#1-环境搭建" class="headerlink" title="1. 环境搭建"></a>1. 环境搭建</h4><ul>
+<li>初始化node.js项目</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+<ul>
+<li>下载MCP的sdk</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @modelcontextprotocol/sdk</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后下载类型验证工具zod和一些node和ts环境的常用工具</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install zod typescript @types/node ts-node nodemon</span><br></pre></td></tr></table></figure>
+<p>然后我们主要介绍如何创建mcp server，关于整个sdk的教程可以看<a target="_blank" rel="noopener" href="https://github.com/modelcontextprotocol/typescript-sdk/tree/main/docs">typescript-sdk/docs at main · modelcontextprotocol/typescript-sdk</a><br>。</p>
+<h4 id="2-server传输方式"><a href="#2-server传输方式" class="headerlink" title="2. server传输方式"></a>2. server传输方式</h4><p>sdk根据传输方式的不同给出了三种server：</p>
+<ul>
+<li>Streamable HTTP：一般用于远程服务器，响应和请求通过HTTP POST/GET实现，可支持服务端到客户端的SSE。</li>
+<li>HTTP+SSE：已经弃用的一种方式，仅用于向后兼容，请求使用HTTP，响应和通知通过单独的SSE连接。</li>
+<li>stdio：用于本地、进程创建的集成，标准化输入输出。</li>
+</ul>
+<h4 id="3-创建MCP-Server"><a href="#3-创建MCP-Server" class="headerlink" title="3. 创建MCP Server"></a>3. 创建MCP Server</h4><p>单单创建一个MCP Server很简单，我们只需导出MCPServer的类，然后new一下就行：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">McpServer</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@modelcontextprotocol/server&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = <span class="keyword">new</span> <span class="title class_">McpServer</span>(</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="attr">name</span>: <span class="string">&#x27;simple-streamable-http-server&#x27;</span>,</span><br><span class="line">		<span class="attr">version</span>: <span class="string">&#x27;1.0.0&#x27;</span>,</span><br><span class="line">		<span class="attr">icons</span>: [&#123; <span class="attr">src</span>: <span class="string">&#x27;./mcp.svg&#x27;</span>, <span class="attr">sizes</span>: [<span class="string">&#x27;512x512&#x27;</span>], <span class="attr">mimeType</span>: <span class="string">&#x27;image/svg+xml&#x27;</span> &#125;],</span><br><span class="line">		<span class="attr">websiteUrl</span>: <span class="string">&#x27;https://github.com/modelcontextprotocol/typescript-sdk&#x27;</span>,</span><br><span class="line">		...,</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="attr">capabilities</span>: &#123; <span class="attr">logging</span>: &#123;&#125;, <span class="attr">tasks</span>: &#123; <span class="attr">requests</span>: &#123; <span class="attr">tools</span>: &#123; <span class="attr">call</span>: &#123;&#125; &#125; &#125; &#125; &#125;,</span><br><span class="line">		taskStore, <span class="comment">// Enable task support</span></span><br><span class="line">		<span class="attr">taskMessageQueue</span>: <span class="keyword">new</span> <span class="title class_">InMemoryTaskMessageQueue</span>(),</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>其中，name和version是必传的。</p>
+<p>然后重要的就是注册工具，比如，一个经典的hello world</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">server.<span class="title function_">registerTool</span>(</span><br><span class="line">  <span class="string">&quot;greet&quot;</span>,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&quot;Greeting Tool&quot;</span>, <span class="comment">// Display name for UI</span></span><br><span class="line">    <span class="attr">description</span>: <span class="string">&quot;A simple greeting tool&quot;</span>,</span><br><span class="line">    <span class="attr">inputSchema</span>: &#123;</span><br><span class="line">      <span class="attr">name</span>: z.<span class="title function_">string</span>().<span class="title function_">describe</span>(<span class="string">&quot;Name to greet&quot;</span>),</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">async</span> (&#123; name &#125;): <span class="title class_">Promise</span>&lt;<span class="title class_">CallToolResult</span>&gt; =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">content</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">type</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">          <span class="attr">text</span>: <span class="string">`Hello, <span class="subst">$&#123;name&#125;</span>!`</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>传入一个name唯一标识工具，然后一些配置和一个调用时执行的回调函数。</p>
+<p>最后选择一种传输方式连接，比如说选择第一种传输方式：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">	<span class="keyword">const</span> transport = <span class="keyword">new</span> <span class="title class_">NodeStreamableHTTPServerTransport</span>();</span><br><span class="line">	<span class="keyword">await</span> server.<span class="title function_">connect</span>(transport);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>最后启动MCP服务器即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+<p>完整的例子可以看官方文档里给的例子<a target="_blank" rel="noopener" href="https://github.com/modelcontextprotocol/typescript-sdk/blob/main/examples/server/src/simpleStreamableHttp.ts">typescript-sdk/examples/server/src/simpleStreamableHttp.ts at main · modelcontextprotocol/typescript-sdk</a>。<br>当然，也可以看看我写的简易版。<br><a target="_blank" rel="noopener" href="https://github.com/fupingyezi/MCP-Server-Study.git">https://github.com/fupingyezi/MCP-Server-Study.git</a></p>
+<p>参考文献：<br><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/docs/getting-started/intro">Specification - Model Context Protocol</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29001189476">MCP (Model Context Protocol)，一篇就够了。 - 知乎</a><br><a target="_blank" rel="noopener" href="https://www.anthropic.com/news/model-context-protocol">Introducing the Model Context Protocol \ Anthropic</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          
+          
+            <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="前端面试篇——js手写" class="lazyload">
+          
+        
+        <a href="/2026/02/04/js%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E7%AF%87/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            前端面试篇——js手写
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="React原理解析——scheduler调度篇" class="lazyload">
+        
+      
+      <a href="/2025/08/30/React%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90%E2%80%94%E2%80%94scheduler%E8%B0%83%E5%BA%A6%E7%AF%87/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          React原理解析——scheduler调度篇
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Model-Context-Protocol"><span class="toc-number">1.</span> <span class="toc-text">Model Context Protocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84MCP%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">搭建一个自己的MCP服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">2.1.</span> <span class="toc-text">1. 环境搭建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-server%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2. server传输方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BAMCP-Server"><span class="toc-number">2.3.</span> <span class="toc-text">3. 创建MCP Server</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">24</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">31</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2026
+      <span class="footer-info-sep"></span>
+      Tu Yuheng
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        97.3k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        06:40
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Model-Context-Protocol"><span class="toc-number">1.</span> <span class="toc-text">Model Context Protocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84MCP%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">搭建一个自己的MCP服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">2.1.</span> <span class="toc-text">1. 环境搭建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-server%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2. server传输方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BAMCP-Server"><span class="toc-number">2.3.</span> <span class="toc-text">3. 创建MCP Server</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">24</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">31</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.6/dist/index.umd.js" integrity="sha384-vkGvf25gm1C1PbcoD5dNfc137HzNL&#x2F;hr1RKA5HniJOaawtvUmH5lTVFgFAruE9Ge" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+
