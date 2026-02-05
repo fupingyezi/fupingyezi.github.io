@@ -1,0 +1,738 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    一文带你入门Transformer |
+    
+    Tu Yuheng&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="本篇文章主要参照b站视频Transformer讲解以及经典论文Attention Is All You Need。主要是理解Transform是什么，所以不是很细。跟手写笔记一起说。 一. 神经网络 1. 神经元与神经网络首先，我们要理解神经网络是什么？ 如所示：一个简单的神经元由输入层x-&gt;输出层y组成，从x-&gt;y的映射是一层线性映射套一层激活函数。而神经网络就是这样的神经元互相连接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文带你入门Transformer">
+<meta property="og:url" content="http://fupingyezi.github.io/2026/02/05/Transformer/index.html">
+<meta property="og:site_name" content="Tu Yuheng&#39;s Blog">
+<meta property="og:description" content="本篇文章主要参照b站视频Transformer讲解以及经典论文Attention Is All You Need。主要是理解Transform是什么，所以不是很细。跟手写笔记一起说。 一. 神经网络 1. 神经元与神经网络首先，我们要理解神经网络是什么？ 如所示：一个简单的神经元由输入层x-&gt;输出层y组成，从x-&gt;y的映射是一层线性映射套一层激活函数。而神经网络就是这样的神经元互相连接">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/28626a4a40775124164d1644c6e3c1f8.jpg">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/5979e91cc87a2a437f00d2ca0825ce54.jpg">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/7b779b4eff5adc88019134bda47e1f07.jpg">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/3a6a3dbde39e9a98e3fdbb2d13bd4b69.jpg">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/Pasted-image-20260205181849.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/4f41f379872ea33ecc08cee23053e6a4.jpg">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/Pasted-image-20260205182836.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/b39c80e1966ec0baa1136a89d83e114d.jpg">
+<meta property="og:image" content="http://fupingyezi.github.io/2026/02/05/Transformer/images/llm/Pasted-image-20260205195813.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/llm/Pasted-image-20260205205007.png">
+<meta property="og:image" content="http://fupingyezi.github.io/2026/02/05/Transformer/images/llm/Pasted-image-20260205202950.png">
+<meta property="article:published_time" content="2026-02-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-05T13:13:03.457Z">
+<meta property="article:author" content="Tu Yuheng">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="大语言模型">
+<meta property="article:tag" content="transformer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fupingyezi.github.io/images/llm/28626a4a40775124164d1644c6e3c1f8.jpg">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Tu Yuheng's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css">
+
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="一文带你入门Transformer">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">一文带你入门Transformer</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-Transformer" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2026/02/05/Transformer/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2026-02-04T16:00:00.000Z" itemprop="datePublished">2026-02-05</time>
+    <time style="display: none;" id="post-update-time">2026-02-05</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <p>本篇文章主要参照b站视频<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1fj6vBfEnu/?spm_id_from=333.1387.homepage.video_card.click">Transformer讲解</a>以及经典论文Attention Is All You Need。<br>主要是理解Transform是什么，所以不是很细。跟手写笔记一起说。</p>
+<h1 id="一-神经网络"><a href="#一-神经网络" class="headerlink" title="一. 神经网络"></a>一. 神经网络</h1><p><img src="/images/llm/28626a4a40775124164d1644c6e3c1f8.jpg" alt=""></p>
+<h3 id="1-神经元与神经网络"><a href="#1-神经元与神经网络" class="headerlink" title="1. 神经元与神经网络"></a>1. 神经元与神经网络</h3><p>首先，我们要理解神经网络是什么？</p>
+<p>如所示：<br>一个简单的神经元由输入层x-&gt;输出层y组成，从x-&gt;y的映射是<strong>一层线性映射套一层激活函数</strong>。而神经网络就是这样的神经元互相连接组成。</p>
+<p>显然，我们在训练时不可能一层解决问题，一般数据与数据之间的关系往往体现在更高维上，因此上述的一层线性+一层激活函数的映射会在中间实现很多次。所以，在最初的输入和最后的输出中间往往还包含着很多层神经元连接，我们称之为隐藏层。</p>
+<p>这样从输入不断通过中间神经元到最后输出的过程，就是<strong>前向传播</strong>。而训练的工程，就是求得合适的一组w、b等参数使得我们定义的损失函数达到最小（当然这里最后的y表达式有问题，如果理解了你就知道怎么改了）。</p>
+<h3 id="2-神经网络的训练拟合"><a href="#2-神经网络的训练拟合" class="headerlink" title="2. 神经网络的训练拟合"></a>2. 神经网络的训练拟合</h3><p>如何确定一组参数使损失函数达到最小，我们通常采用梯度下降的方式，一般需要用到损失函数对所求参数的偏导数。</p>
+<p>而恰如笔记所示，我们所需的这个偏导，可以由求偏导的链式法则不断向前求得，而在这个向前的过程中，本层求得的结果，再向前一层传播之后，可以直接用到前一层，大大简化了运算。而这个过程，就是<strong>误差的反向传播</strong>。</p>
+<p>一前一后，组成了神经网络的基本训练逻辑。</p>
+<h3 id="3-过拟合问题"><a href="#3-过拟合问题" class="headerlink" title="3. 过拟合问题"></a>3. 过拟合问题</h3><p>如果我们把一组参数训练的过于拟合，甚至每个点都能对应训练数据的每个点，那么很有可能就会出现<strong>过拟合问题</strong>，因为训练数据可能会有噪声，误差点。</p>
+<p>而这样的结果就导致，如果去预测新数据，可能反而误差更大。因此，我们会采取很多措施来防止过拟合，最经典的就是正则化。<br><img src="/images/llm/5979e91cc87a2a437f00d2ca0825ce54.jpg" alt=""><br>tips：Dropout是指每次训练时选择性地忽略一些参数，</p>
+<h1 id="二、卷积神经网络"><a href="#二、卷积神经网络" class="headerlink" title="二、卷积神经网络"></a>二、卷积神经网络</h1><p><img src="/images/llm/7b779b4eff5adc88019134bda47e1f07.jpg" alt=""></p>
+<h3 id="1-矩阵运算"><a href="#1-矩阵运算" class="headerlink" title="1. 矩阵运算"></a>1. 矩阵运算</h3><p>这个就是线性代数的知识了，看笔记里的图应该就能看懂，本质就是将看起来很复杂的代数运算转化成矩阵运算，当然这样做不是仅仅因为看起来会简洁很多，在实际gpu训练过程中，矩阵运算也会占有许多优势。</p>
+<p>注意到上述在笔记中画的神经元之间都是全连接，而这会导致一些问题，比如在一些复杂情形比如图像识别中，最后需要更新的参数量可能到达数百万，因此，我们引入下面的卷积概念。</p>
+<h3 id="2-卷积运算与卷积神经网络"><a href="#2-卷积运算与卷积神经网络" class="headerlink" title="2. 卷积运算与卷积神经网络"></a>2. 卷积运算与卷积神经网络</h3><p><img src="/images/llm/3a6a3dbde39e9a98e3fdbb2d13bd4b69.jpg" alt=""><br>首先，早在图像处理领域中，就已经提出了卷积核这个概念，其一般是确定的一些矩阵，可以达到锐化、模糊原图像的一些效果。</p>
+<p>具体过程就是在原图像对应位置取一个n×n矩阵，让其与卷积核相乘，即对应位置相乘，最后结果相加得到一个新值取代原值，最后对原图像扫一遍过去，所得的新值就组成了一个新图像。<br><img src="/images/llm/Pasted-image-20260205181849.png" alt=""></p>
+<p>而卷积神经网络就引入了这个卷积核，把一层全连接层换成卷积层，具体的运算换成卷积运算。不过在最后的神经网络中，还引入了池化层，其主要是在卷积后降维并提取特征、增加鲁棒性。</p>
+<p>注意，卷积层、池化层和全连接层是可以多个的。</p>
+<h1 id="三、循环神经网络"><a href="#三、循环神经网络" class="headerlink" title="三、循环神经网络"></a>三、循环神经网络</h1><p>可以发现卷积神经网络是基本是静态处理，所以一般也只用作图像处理领域，如果要预测什么东西，用到的是循环神经网络。<br><img src="/images/llm/4f41f379872ea33ecc08cee23053e6a4.jpg" alt=""></p>
+<h3 id="1-词嵌入和嵌入矩阵"><a href="#1-词嵌入和嵌入矩阵" class="headerlink" title="1. 词嵌入和嵌入矩阵"></a>1. 词嵌入和嵌入矩阵</h3><p>当然，第一个问题就是计算机是不懂什么单词、文字的，所以我们第一步是如何转化词使之成为计算机能懂的语言，这个过程称之为<strong>编码</strong>。</p>
+<p>一个直观的想法是把所有词定义成一个向量空间，词的种类为向量空间的维数，这句话中这个词有，对应位置就是1，这样就是<strong>one-hot编码</strong>。但显然，这样存在一个问题，维数会太大了。</p>
+<p>因此词嵌入就出现了，通过深度学习的方式来将其转化为在高维空间能够体现词相互之间关系的词向量，即使我们从肉眼直观看不出来什么关系。<br><img src="/images/llm/Pasted-image-20260205182836.png" alt=""><br>不过可以用<strong>余弦定理或者点积</strong>来计算相关性。<br>把词向量组成一个矩阵就是<strong>嵌入矩阵</strong>。</p>
+<h3 id="2-循环神经网络"><a href="#2-循环神经网络" class="headerlink" title="2. 循环神经网络"></a>2. 循环神经网络</h3><p>回到问题，预测问题本质是探究词与词之间的关联关系，才能够从这个词来预测下一个词。那么普通的训练怎么能够得到语序关系呢？</p>
+<p>所以如笔记，神经网络引入了一个隐藏层，通过隐藏层将此词前面的词的信息传到当前层，从而在最后的训练结果中能够体现语句前后的顺序关联。</p>
+<p>但问题还是很明显，如果句子足够长，而且两个强关联词也隔得足够长，那么RNN怎么捕获这两个词之间的关联性呢？(长期依赖问题)，并且我们发现下一个词是强依赖上一个词的，也就意味着断绝了并行计算这条路。</p>
+<p>即使后面引入了很多解决方式，但还是过时了。因为，伟大的Transformer出现了。</p>
+<h1 id="四、Transformer"><a href="#四、Transformer" class="headerlink" title="四、Transformer"></a>四、Transformer</h1><p><img src="/images/llm/b39c80e1966ec0baa1136a89d83e114d.jpg" alt=""></p>
+<h3 id="1-基本机制"><a href="#1-基本机制" class="headerlink" title="1. 基本机制"></a>1. 基本机制</h3><p>首先，我们讲讲transform大概是个什么过程，再拜读一下Attention Is All You Need。</p>
+<p>首先，词嵌入把词转化为词向量。然后分别乘以三个矩阵$W_q、W_k、W_v$（分别代表query，key，value），得到对应的三个维数不变的矩阵，比如$q$矩阵，每一列对应每一个词转化后的词向量。</p>
+<p>然后以I单词的视角，计算与其他词的相似度，即$q_1\cdot k_{i}=a_{1i}$，再以这个为权重，$v_i$为值，加权得到$a_1$，这就是I单词视角下，其位置和上下文信息得到的词向量，同理，其他单词执行同样的过程，最后得到其他对应的词向量。而这一个过程，就是<strong>attention</strong>。</p>
+<p>但单单执行一次，获得的信息还是太少了，因此我们又对$q、k、v$执行一次转换，拆分了一下维数，然后对不同的$q、k、v$执行上述<strong>attention</strong>的过程，最后再合并，得到最后的词向量。这个过程叫做<strong>multi-head attention</strong>。</p>
+<p>大致就是这样的一个过程，很简单叭，transformer核心机制确实不难，但就是非常好用。</p>
+<h3 id="2-详解transformer-Attention-Is-All-You-Need"><a href="#2-详解transformer-Attention-Is-All-You-Need" class="headerlink" title="2. 详解transformer-Attention Is All You Need"></a>2. 详解transformer-Attention Is All You Need</h3><h4 id="Introduce-and-Background"><a href="#Introduce-and-Background" class="headerlink" title="Introduce and Background"></a>Introduce and Background</h4><p>文章一上来两节就阐释了RNN的一些模型无法并行化以及长期依赖问题，然后引出Transformer架构，并指出其是首个完全摒弃循环神经网络，只依靠<strong>注意力机制</strong>的模型。</p>
+<p>这里提到了一个关键概念：</p>
+<ul>
+<li>自注意力机制(内部注意力机制)：一种通过关联单个序列中不同位置来计算该序列表征的注意力机制。</li>
+</ul>
+<h4 id="Model-Architecture"><a href="#Model-Architecture" class="headerlink" title="Model Architecture"></a>Model Architecture</h4><p><img src="images/llm/Pasted-image-20260205195813.png" alt=""><br>如图，其由两部分组成，左侧为解码器，右侧为编码器，整体为采用堆叠式自注意力机制和逐点全连接层构成编码器与解码器结构。</p>
+<h5 id="编码器和解码器"><a href="#编码器和解码器" class="headerlink" title="编码器和解码器"></a>编码器和解码器</h5><p>先来大致梳理一下编码器和解码器分别的流程和其中的一些名词是什么：</p>
+<ul>
+<li><strong>左侧编码器</strong>：输入 -&gt; 词嵌入 -&gt; 位置编码 -&gt; N个重复的 “Multi-Head Attention + Add &amp; Norm + Feed Forward + Add &amp; Norm”层 -&gt; 输出编码器表示。</li>
+<li><strong>右侧解码器</strong>：右移的输出 -&gt; 词嵌入 -&gt; 位置编码 -&gt; N个重复的 “Masked Multi-Head Attention + Add &amp; Norm + Multi-Head Attention + Add &amp; Norm + Feed Forward + Add &amp; Norm” 层 -&gt; 最终输出。</li>
+</ul>
+<p>关于Multi-Head Attention和词嵌入，之前已经说了。说一下没说过的：</p>
+<ul>
+<li>Positional Encoding位置编码：Transformer是并行化的，这意味着不能像RNN那样本身就带有前后顺序关系，所以这一步用于告知模型每个token在序列中的位置。是直接加到词嵌入中的。论文中采用的是正弦预先函数，传参只与pos和i有关。<br><img src="/images/llm/Pasted-image-20260205205007.png" alt=""></li>
+<li>N×：就是N个堆叠层，论文中以6为例。</li>
+<li>Add &amp; Norm：<strong>残差连接+层归一化</strong>，前者是将子层的输入和该子层的输出相加，缓解梯度消失问题‘后者是结果归一化处理，使数据分布稳定，加速训练。</li>
+<li>Feed Forward：<strong>前馈神经网络</strong>，一个简单的全连接神经网络，通常包含两层线性变换和一个激活函数(ReLU,max)，即$FFN(x)=\max(0, xW_{1}+b_{1})W_{2}+b_{2}$。</li>
+<li>Masked：<strong>掩码</strong>，主要是对未来的位置进行掩码处理，简单来说就是遮住，因为对当前词，下一词是预测，而不是直接看答案。</li>
+<li>Linear：<strong>线性层</strong>，一个全连接的线性层，主要是将解码器最后一层的输出从模型的隐藏维度映射到词汇表的大小。</li>
+<li>Softmax：将输出转化成概率分布函数，所有输出概率之和为1。</li>
+</ul>
+<h5 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h5><p><img src="images/llm/Pasted-image-20260205202950.png" alt=""><br>关于注意力机制，之前已经说过了，这里根据论文中的图再带一次：</p>
+<p>左侧<strong>缩放点积注意力机制</strong>，就是之前写的第一个过程。MatMul就是矩阵乘法，跟之前的步骤是一样的。Mask掩码和SoftMax转化成概率分布就不赘述了。</p>
+<p>唯一区别是Scale缩放，这也是命名里的缩放，去掉缩放，也就完全是之前所说的了。而文章中也解释了这一点——是因为如果不缩放，可能会出现K维度过大导致softmax函数进入极小梯度，因此进行了一步缩放。所以整个函数为：</p>
+<script type="math/tex; mode=display">
+Attention(Q,K,V) = SoftMax\left( \frac{QK^T}{\sqrt{ d_{k} }} \right)V</script><p>右侧<strong>多头注意力机制</strong>，就是上述所说的多次线性映射最后拼接的过程了，函数为：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+MultiHead(Q,K,V) & =Concat(head_{1},\dots,head_{h})W^O \\
+where\quad head_{i}  & = Attention(QW_{i}^Q, KW_{i}^K, VW_{i}^V)
+\end{align}</script><p>后面就是一些训练和总结的内容了，就不说了。总结一些上述没有深入的关键概念。</p>
+<ul>
+<li>自回归：用序列中已知的过去（或前面）的值，来预测当前或未来的值。</li>
+<li>自注意力机制：前文介绍了概念，在Transformer主要在Encoder编码器中体现，注意到右侧解码器的Q、K、V中的Q、K是来源于编码器的，在编码器中，Q、K之间的计算就是通过关联单个序列不同位置来计算表征的。</li>
+<li>Encoder-Only, Decoder-Only, Encoder-Decoder：字面理解很简单，但实际运用肯定不简单，就先用AI介绍一下大概的。</li>
+</ul>
+<p>结构差异：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>结构组成</th>
+<th>是否包含注意力掩码</th>
+<th>自注意力类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Encoder-Only</strong></td>
+<td>仅包含 N 层 Encoder（多头自注意力 + 前馈网络）</td>
+<td>❌ 无掩码（可看到整个输入）</td>
+<td><strong>双向自注意力</strong>（Bi-directional）</td>
+</tr>
+<tr>
+<td><strong>Decoder-Only</strong></td>
+<td>仅包含 N 层 Decoder（但通常省略交叉注意力）</td>
+<td>✅ 有掩码（只能看到当前及之前 token）</td>
+<td><strong>单向自注意力</strong>（Causal / Masked）</td>
+</tr>
+<tr>
+<td><strong>Encoder-Decoder</strong></td>
+<td>包含 Encoder + Decoder 两部分</td>
+<td>Encoder 无掩码，Decoder 有掩码</td>
+<td>Encoder 双向；Decoder 单向 + 交叉注意力</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>应用：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>代表模型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Encoder-Only</td>
+<td>BERT, RoBERTa, ALBERT, DeBERTa</td>
+</tr>
+<tr>
+<td>Decoder-Only</td>
+<td>GPT-1/2/3/4, LLaMA, Mistral, Qwen, Gemma</td>
+</tr>
+<tr>
+<td>Encoder-Decoder</td>
+<td>Original Transformer, T5, BART, mT5, Pegasus</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/transformer/" rel="tag">transformer</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/" rel="tag">大语言模型</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="前端面试篇——js手写" class="lazyload">
+        
+      
+      <a href="/2026/02/04/js%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E7%AF%87/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          前端面试篇——js手写
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">一. 神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A5%9E%E7%BB%8F%E5%85%83%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. 神经元与神经网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E8%AE%AD%E7%BB%83%E6%8B%9F%E5%90%88"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. 神经网络的训练拟合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%87%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. 过拟合问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">2.</span> <span class="toc-text">二、卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97"><span class="toc-number">2.0.1.</span> <span class="toc-text">1. 矩阵运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8D%B7%E7%A7%AF%E8%BF%90%E7%AE%97%E4%B8%8E%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">2.0.2.</span> <span class="toc-text">2. 卷积运算与卷积神经网络</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">3.</span> <span class="toc-text">三、循环神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AF%8D%E5%B5%8C%E5%85%A5%E5%92%8C%E5%B5%8C%E5%85%A5%E7%9F%A9%E9%98%B5"><span class="toc-number">3.0.1.</span> <span class="toc-text">1. 词嵌入和嵌入矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">3.0.2.</span> <span class="toc-text">2. 循环神经网络</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Transformer"><span class="toc-number">4.</span> <span class="toc-text">四、Transformer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%9C%BA%E5%88%B6"><span class="toc-number">4.0.1.</span> <span class="toc-text">1. 基本机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%A6%E8%A7%A3transformer-Attention-Is-All-You-Need"><span class="toc-number">4.0.2.</span> <span class="toc-text">2. 详解transformer-Attention Is All You Need</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Introduce-and-Background"><span class="toc-number">4.0.2.1.</span> <span class="toc-text">Introduce and Background</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model-Architecture"><span class="toc-number">4.0.2.2.</span> <span class="toc-text">Model Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-number">4.0.2.2.1.</span> <span class="toc-text">编码器和解码器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="toc-number">4.0.2.2.2.</span> <span class="toc-text">注意力机制</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">33</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2026
+      <span class="footer-info-sep"></span>
+      Tu Yuheng
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        100.4k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        06:51
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">一. 神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A5%9E%E7%BB%8F%E5%85%83%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. 神经元与神经网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E8%AE%AD%E7%BB%83%E6%8B%9F%E5%90%88"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. 神经网络的训练拟合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%BF%87%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. 过拟合问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">2.</span> <span class="toc-text">二、卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97"><span class="toc-number">2.0.1.</span> <span class="toc-text">1. 矩阵运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8D%B7%E7%A7%AF%E8%BF%90%E7%AE%97%E4%B8%8E%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">2.0.2.</span> <span class="toc-text">2. 卷积运算与卷积神经网络</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">3.</span> <span class="toc-text">三、循环神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%AF%8D%E5%B5%8C%E5%85%A5%E5%92%8C%E5%B5%8C%E5%85%A5%E7%9F%A9%E9%98%B5"><span class="toc-number">3.0.1.</span> <span class="toc-text">1. 词嵌入和嵌入矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">3.0.2.</span> <span class="toc-text">2. 循环神经网络</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Transformer"><span class="toc-number">4.</span> <span class="toc-text">四、Transformer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%9C%BA%E5%88%B6"><span class="toc-number">4.0.1.</span> <span class="toc-text">1. 基本机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%A6%E8%A7%A3transformer-Attention-Is-All-You-Need"><span class="toc-number">4.0.2.</span> <span class="toc-text">2. 详解transformer-Attention Is All You Need</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Introduce-and-Background"><span class="toc-number">4.0.2.1.</span> <span class="toc-text">Introduce and Background</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Model-Architecture"><span class="toc-number">4.0.2.2.</span> <span class="toc-text">Model Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-number">4.0.2.2.1.</span> <span class="toc-text">编码器和解码器</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6"><span class="toc-number">4.0.2.2.2.</span> <span class="toc-text">注意力机制</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">25</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">33</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.6/dist/index.umd.js" integrity="sha384-vkGvf25gm1C1PbcoD5dNfc137HzNL&#x2F;hr1RKA5HniJOaawtvUmH5lTVFgFAruE9Ge" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+
