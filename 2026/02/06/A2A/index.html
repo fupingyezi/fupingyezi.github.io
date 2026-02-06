@@ -1,0 +1,746 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  
+  <script>window.icon_font = '4552607_tq6stt6tcg';window.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};</script>
+  
+  
+  <title>
+    A2A协议概览 |
+    
+    Tu Yuheng&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_tq6stt6tcg.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="一、A2A简介A2A (Agent2Agent) 协议是由 Google Cloud 发起的一个开源协议，主要是为了让来自不同供应商或则基于不同架构构建的异构AI Agent能够互相进行安全通信和任务协作。或者说，就是为Agent之间定义了一套沟通标准。 其作用就很明显，就是为了解决Agent之间不兼容，导致的碎片化问题。 其设计原则如下：  拥抱代理能力 (Embrace agentic cap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A2A协议概览">
+<meta property="og:url" content="http://fupingyezi.github.io/2026/02/06/A2A/index.html">
+<meta property="og:site_name" content="Tu Yuheng&#39;s Blog">
+<meta property="og:description" content="一、A2A简介A2A (Agent2Agent) 协议是由 Google Cloud 发起的一个开源协议，主要是为了让来自不同供应商或则基于不同架构构建的异构AI Agent能够互相进行安全通信和任务协作。或者说，就是为Agent之间定义了一套沟通标准。 其作用就很明显，就是为了解决Agent之间不兼容，导致的碎片化问题。 其设计原则如下：  拥抱代理能力 (Embrace agentic cap">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://fupingyezi.github.io/images/a2a/Pasted-image-20260206141512.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/a2a/Pasted-image-20260206142544.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/a2a/Pasted-image-20260206143115.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/a2a/Pasted-image-20260206143141.png">
+<meta property="og:image" content="http://fupingyezi.github.io/images/a2a/Pasted-image-20260206143155.png">
+<meta property="og:image" content="http://fupingyezi.github.io/2026/02/06/A2A/images/a2a/Pasted-image-20260206144234.png">
+<meta property="article:published_time" content="2026-02-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-06T08:16:13.027Z">
+<meta property="article:author" content="Tu Yuheng">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="A2A">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://fupingyezi.github.io/images/a2a/Pasted-image-20260206141512.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Tu Yuheng's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.9/dist/katex.min.css">
+
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+          <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="#ff5252" />
+          <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+         M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="#ff5252" />
+        </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/">Home</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/archives">Archives</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/about">About</a>
+      </span>
+    
+      <span class="main-nav-link-wrap">
+        <div class="main-nav-icon icon-taichi"></div>
+        <a class="main-nav-link" href="/friend">Friend</a>
+      </span>
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed" target="_blank"></a>
+    
+    
+    
+  </nav>
+</div>
+<header id="header">
+  
+    
+      <img fetchpriority="high" src="/images/banner.webp" alt="A2A协议概览">
+    
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">A2A协议概览</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content">
+          
+          <section id="main"><article id="post-A2A" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2026/02/06/A2A/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2026-02-05T16:00:00.000Z" itemprop="datePublished">2026-02-06</time>
+    <time style="display: none;" id="post-update-time">2026-02-06</time>
+  </a>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="一、A2A简介"><a href="#一、A2A简介" class="headerlink" title="一、A2A简介"></a>一、A2A简介</h1><p>A2A (Agent2Agent) 协议是由 Google Cloud 发起的一个开源协议，主要是为了让来自不同供应商或则基于不同架构构建的<strong>异构AI Agent能够互相进行安全通信和任务协作</strong>。或者说，就是为Agent之间定义了一套沟通标准。</p>
+<p>其作用就很明显，就是为了解决Agent之间不兼容，导致的碎片化问题。</p>
+<p>其设计原则如下：</p>
+<ol>
+<li><strong>拥抱代理能力 (Embrace agentic capabilities):</strong> 允许代理在其自然的、非结构化的模式下协作，无需共享内存、工具或上下文，实现真实的多代理场景。</li>
+<li><strong>基于现有标准构建 (Build on existing standards):</strong> 协议建立在广泛接受的技术标准（如 HTTP, SSE, JSON-RPC）之上，便于与企业现有 IT 堆栈集成。</li>
+<li><strong>默认安全 (Secure by default):</strong> 设计支持企业级身份验证和授权，确保只有授权的用户和系统可以访问代理。</li>
+<li><strong>支持长时间运行的任务 (Support for long-running tasks):</strong> 灵活支持从快速任务到需要数小时甚至数天（当有人工介入时）的复杂研究等多种场景，并能在任务执行期间提供实时反馈、通知和状态更新。</li>
+<li><strong>模态无关 (Modality agnostic):</strong> 支持多种交互形式，包括文本、音频、视频流、表单 (form)、内嵌框架 (iframe) 等，增强代理的交互能力和适应性。</li>
+</ol>
+<h1 id="二、A2A架构"><a href="#二、A2A架构" class="headerlink" title="二、A2A架构"></a>二、A2A架构</h1><h3 id="1-核心参与者及关系"><a href="#1-核心参与者及关系" class="headerlink" title="1. 核心参与者及关系"></a>1. 核心参与者及关系</h3><p>A2A的核心参与者主要分为三部分：</p>
+<ul>
+<li>User：最终用户，可以是人类操作员或自动化服务。用户发起需要一个或多个AI智能体协助的请求或定义目标。</li>
+<li>Client：代表用户向代理（服务、应用程序）请求操作的实体，即客户端智能体。</li>
+<li>Server：提供服务的不透明（黑盒）远程代理，即 A2A 服务器，远程智能体。<br><img src="/images/a2a/Pasted-image-20260206141512.png" alt=""></li>
+</ul>
+<h3 id="2-基本通信元素"><a href="#2-基本通信元素" class="headerlink" title="2. 基本通信元素"></a>2. 基本通信元素</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>描述</th>
+<th>关键目的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>智能体卡片Agent Card</td>
+<td>描述智能体身份、能力、端点、<strong>技能列表</strong>和身份验证要求的JSON元数据文档。</td>
+<td>使客户端能够发现智能体并了解如何安全有效地与它们交互。</td>
+</tr>
+<tr>
+<td>任务Task</td>
+<td>由智能体发起的有状态工作单元，具有唯一ID和定义的生命周期。</td>
+<td>促进长时间运行操作的跟踪，并支持多轮交互和协作。</td>
+</tr>
+<tr>
+<td>消息Message</td>
+<td>客户端和智能体之间的单轮通信，包含内容和角色（“用户”或”智能体”）。</td>
+<td>传递指令、上下文、问题、答案或不一定是正式工件的状态更新。</td>
+</tr>
+<tr>
+<td>部件Part</td>
+<td>消息和工件中使用的基本内容容器（例如TextPart、FilePart、DataPart），是构成Message或Artifact的基本单元。</td>
+<td>为智能体在消息和工件中交换各种内容类型提供灵活性。</td>
+</tr>
+<tr>
+<td>工件Artifact</td>
+<td>智能体在任务期间生成的有形输出（例如文档、图像或结构化数据）。</td>
+<td>提供智能体工作的具体结果，确保结构化和可检索的输出。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>如果你已经了解过一些智能体的开发或者尝试在代码层面上构建过智能体，想必看到这几个基本元素，就会感到熟悉了。</p>
+<h3 id="3-一些核心概念速览"><a href="#3-一些核心概念速览" class="headerlink" title="3. 一些核心概念速览"></a>3. 一些核心概念速览</h3><h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a>Agent</h4><p>Agent是协议中的核心实体，通常具备以下特征：</p>
+<ul>
+<li><strong>唯一标识</strong>：每个智能体都有全局唯一 ID</li>
+<li><strong>能力描述</strong>：以标准格式描述其功能</li>
+<li><strong>状态管理</strong>：维护运行时状态</li>
+<li><strong>生命周期</strong>：包含创建、启动、停止/关闭等阶段<br>以JSON化描述，可以参考示例：</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;chat-assistant-001&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Customer Service Assistant&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;capabilities&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;chat&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Multi-turn dialogue support&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;inputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;message&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;outputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;reply&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;kb-search&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Knowledge base search&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;inputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;query&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;outputs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;results&quot;</span><span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;metadata&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;vendor&quot;</span><span class="punctuation">:</span> <span class="string">&quot;google&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;model&quot;</span><span class="punctuation">:</span> <span class="string">&quot;llm-v1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;language&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;en&quot;</span><span class="punctuation">,</span> <span class="string">&quot;es&quot;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h4><p>任务是由智能体执行的具体工作单元：</p>
+<ul>
+<li><strong>任务类型</strong>：标识任务应如何处理</li>
+<li><strong>输入/输出</strong>：定义任务数据格式</li>
+<li><strong>状态跟踪</strong>：记录任务执行进度</li>
+<li><strong>超时控制</strong>：管理任务执行时间<br>任务的声明周期通常分为以下几个阶段：<br><img src="/images/a2a/Pasted-image-20260206142544.png" alt=""></li>
+</ul>
+<h4 id="Message"><a href="#Message" class="headerlink" title="Message"></a>Message</h4><p>所有通信都使用标准消息格式：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;message&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2025.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;msg-123&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;timestamp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2025-04-12T10:30:00Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;source&quot;</span><span class="punctuation">:</span> <span class="string">&quot;agent-001&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;agent-002&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;payload&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;content&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Message content&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;format&quot;</span><span class="punctuation">:</span> <span class="string">&quot;text&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;metadata&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;trace_id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;trace-123&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;priority&quot;</span><span class="punctuation">:</span> <span class="string">&quot;normal&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="通信模型"><a href="#通信模型" class="headerlink" title="通信模型"></a>通信模型</h4><ul>
+<li>同步通信<br><img src="/images/a2a/Pasted-image-20260206143115.png" alt=""></li>
+<li>异步通信<br><img src="/images/a2a/Pasted-image-20260206143141.png" alt=""></li>
+<li>流式传输<br><img src="/images/a2a/Pasted-image-20260206143155.png" alt=""><br>值得注意的是，在实际开发中，由服务端到客户端肯定是使用流式传输的。</li>
+</ul>
+<h4 id="A2A-Layered-Architecture"><a href="#A2A-Layered-Architecture" class="headerlink" title="A2A Layered Architecture"></a>A2A Layered Architecture</h4><p><img src="images/a2a/Pasted-image-20260206144234.png" alt=""></p>
+<h3 id="4-A2A与MCP之间的关系"><a href="#4-A2A与MCP之间的关系" class="headerlink" title="4. A2A与MCP之间的关系"></a>4. A2A与MCP之间的关系</h3><h4 id="优势互补"><a href="#优势互补" class="headerlink" title="优势互补"></a>优势互补</h4><p>A2A协议可以说是MCP的补充，后者提出了智能体自身工具和资源的使用，而A2A是智能体相互之间的交流沟通，实际运用中，有点类似一个智能体一个服务的感觉，即<strong>智能体应用程序可能主要使用A2A与其他智能体通信。每个单独的智能体内部使用MCP与其特定工具和资源交互</strong>。如下：</p>
+<ul>
+<li><strong>工具和资源（MCP领域）</strong>：<ul>
+<li><strong>特征</strong>：这些通常是具有定义明确、结构化输入和输出的原语。它们执行特定的、通常是无状态的功能。例如计算器、数据库查询API或天气查询服务。</li>
+<li><strong>目的</strong>：智能体使用工具来收集信息并执行离散功能。</li>
+</ul>
+</li>
+<li><strong>智能体（A2A领域）</strong>：<ul>
+<li><strong>特征</strong>：这些是更自主的系统。它们推理、规划、使用多个工具、在较长的交互中维护状态，并进行复杂的、通常是多轮对话来实现新颖或不断发展的任务。</li>
+<li><strong>目的</strong>：智能体与其他智能体协作来处理更广泛、更复杂的目标。</li>
+</ul>
+</li>
+</ul>
+<h4 id="核心差异总结"><a href="#核心差异总结" class="headerlink" title="核心差异总结"></a>核心差异总结</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方面</th>
+<th>A2A协议</th>
+<th>MCP协议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>主要用途</strong></td>
+<td>智能体间协作</td>
+<td>智能体-工具集成</td>
+</tr>
+<tr>
+<td><strong>交互对象</strong></td>
+<td>自主智能体</td>
+<td>工具和资源</td>
+</tr>
+<tr>
+<td><strong>复杂性</strong></td>
+<td>多轮对话、状态管理</td>
+<td>单次函数调用</td>
+</tr>
+<tr>
+<td><strong>状态性</strong></td>
+<td>有状态交互</td>
+<td>通常无状态</td>
+</tr>
+<tr>
+<td><strong>自主性</strong></td>
+<td>高度自主的参与者</td>
+<td>被动的工具执行</td>
+</tr>
+<tr>
+<td><strong>协商能力</strong></td>
+<td>支持协商和澄清</td>
+<td>结构化输入/输出</td>
+</tr>
+<tr>
+<td><strong>用例示例</strong></td>
+<td>客服委托给专家</td>
+<td>数据库查询、API调用</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>参考文档：<a target="_blank" rel="noopener" href="https://agent2agent.info/zh-cn/">Agent2Agent Protocol - The A2A Protocol Community</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/A2A/" rel="tag">A2A</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag">人工智能</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        
+        
+          <img data-src="https://d-sketon.top/img/backimg/bg1.jpg" data-sizes="auto" alt="一文带你入门Transformer" class="lazyload">
+        
+      
+      <a href="/2026/02/05/Transformer/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          一文带你入门Transformer
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+          
+            <aside id="sidebar">
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81A2A%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">一、A2A简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81A2A%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">二、A2A架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E5%8F%82%E4%B8%8E%E8%80%85%E5%8F%8A%E5%85%B3%E7%B3%BB"><span class="toc-number">2.0.1.</span> <span class="toc-text">1. 核心参与者及关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9F%BA%E6%9C%AC%E9%80%9A%E4%BF%A1%E5%85%83%E7%B4%A0"><span class="toc-number">2.0.2.</span> <span class="toc-text">2. 基本通信元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%80%E4%BA%9B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E9%80%9F%E8%A7%88"><span class="toc-number">2.0.3.</span> <span class="toc-text">3. 一些核心概念速览</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Agent"><span class="toc-number">2.0.3.1.</span> <span class="toc-text">Agent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Task"><span class="toc-number">2.0.3.2.</span> <span class="toc-text">Task</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Message"><span class="toc-number">2.0.3.3.</span> <span class="toc-text">Message</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.0.3.4.</span> <span class="toc-text">通信模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#A2A-Layered-Architecture"><span class="toc-number">2.0.3.5.</span> <span class="toc-text">A2A Layered Architecture</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-A2A%E4%B8%8EMCP%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.0.4.</span> <span class="toc-text">4. A2A与MCP之间的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF%E4%BA%92%E8%A1%A5"><span class="toc-number">2.0.4.1.</span> <span class="toc-text">优势互补</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%AE%E5%BC%82%E6%80%BB%E7%BB%93"><span class="toc-number">2.0.4.2.</span> <span class="toc-text">核心差异总结</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">26</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">34</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+      
+      
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+      
+    </div>
+  </div>
+
+  
+</aside>
+
+          
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2020-2026
+      <span class="footer-info-sep"></span>
+      Tu Yuheng
+    </div>
+    
+      <div>
+        Powered by&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        102.1k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        06:57
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">Number of visits&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">Number of visitors&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        <div class="sidebar-top">
+          <img src="/images/taichi.png" height="50" width="50" alt="backtop" />
+          <div class="arrow-up"></div>
+        </div>
+        <div id="mask"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81A2A%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">一、A2A简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81A2A%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">二、A2A架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E5%8F%82%E4%B8%8E%E8%80%85%E5%8F%8A%E5%85%B3%E7%B3%BB"><span class="toc-number">2.0.1.</span> <span class="toc-text">1. 核心参与者及关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%9F%BA%E6%9C%AC%E9%80%9A%E4%BF%A1%E5%85%83%E7%B4%A0"><span class="toc-number">2.0.2.</span> <span class="toc-text">2. 基本通信元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%80%E4%BA%9B%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E9%80%9F%E8%A7%88"><span class="toc-number">2.0.3.</span> <span class="toc-text">3. 一些核心概念速览</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Agent"><span class="toc-number">2.0.3.1.</span> <span class="toc-text">Agent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Task"><span class="toc-number">2.0.3.2.</span> <span class="toc-text">Task</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Message"><span class="toc-number">2.0.3.3.</span> <span class="toc-text">Message</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.0.3.4.</span> <span class="toc-text">通信模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#A2A-Layered-Architecture"><span class="toc-number">2.0.3.5.</span> <span class="toc-text">A2A Layered Architecture</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-A2A%E4%B8%8EMCP%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.0.4.</span> <span class="toc-text">4. A2A与MCP之间的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF%E4%BA%92%E8%A1%A5"><span class="toc-number">2.0.4.1.</span> <span class="toc-text">优势互补</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%AE%E5%BC%82%E6%80%BB%E7%BB%93"><span class="toc-number">2.0.4.2.</span> <span class="toc-text">核心差异总结</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Tu Yuheng" class="lazyload">
+  <div class="sidebar-author-name">Tu Yuheng</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">26</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">34</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+</div>
+<div class="sidebar-menu">
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Home</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Archives</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">About</div>
+    </div>
+  
+    <div class="sidebar-menu-link-wrap">
+      <a class="sidebar-menu-link-dummy" href="/friend" aria-label="Friend"></a>
+      <div class="sidebar-menu-icon icon-taichi"></div>
+      <div class="sidebar-menu-link">Friend</div>
+    </div>
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.0.6/dist/index.umd.js" integrity="sha384-vkGvf25gm1C1PbcoD5dNfc137HzNL&#x2F;hr1RKA5HniJOaawtvUmH5lTVFgFAruE9Ge" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["#ff5252","#ff7c7c","#ffafaf","#ffd0d0"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["#ff0000"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '0.3.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+  <!-- hexo injector body_end start -->
+<script src="/js/insert_highlight.js" data-pjax></script>
+<!-- hexo injector body_end end --></body>
+  </html>
+
